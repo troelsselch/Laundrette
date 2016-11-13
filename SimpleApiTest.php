@@ -10,19 +10,19 @@ $adapter = new DummyAdapter($base_path);
 $api = new Laundrette($adapter);
 
 $data = $api->getTransactions();
-print "=== Transactions ===\n";
+print "=== Transactions ===" . PHP_EOL;
 output($data);
 
 $data = $api->getBalance();
-print "=== Balance ===\n";
+print "=== Balance ===" . PHP_EOL;
 output($data);
 
 $data = $api->getReservations();
-print "=== Reservations ===\n";
+print "=== Reservations ===" . PHP_EOL;
 output($data);
 
 $data = $api->getMachineStates();
-print "=== MachineStates ===\n";
+print "=== MachineStates ===" . PHP_EOL;
 output($data);
 
 function output($data) {
@@ -30,18 +30,18 @@ function output($data) {
     foreach ($data as $datum) {
       if (is_array($datum)) {
         foreach ($datum as $d) {
-          print $d . "\n";
+          print $d . PHP_EOL;
         }
       }
       else {
-        print $datum . "\n";
+        print $datum . PHP_EOL;
       }
     }
   }
   else {
-    print $data . "\n";
+    print $data . PHP_EOL;
   }
-  print "\n";
+  print PHP_EOL;
 }
 
 $api->close();
