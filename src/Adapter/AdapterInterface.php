@@ -1,8 +1,8 @@
 <?php
 
-namespace Laundrette\Api\Adapter;
+namespace Laundrette\Adapter;
 
-class AdapterInterface {
+interface AdapterInterface {
 
   public function call($path, $data);
 

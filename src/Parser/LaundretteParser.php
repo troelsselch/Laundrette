@@ -1,8 +1,7 @@
 <?php
 
-namespace Laundrette\Api\Parser;
+namespace Laundrette\Parser;
 
-// TODO: Necesarry?
 use \DOMDocument;
 
 abstract class LaundretteParser {
@@ -23,7 +22,7 @@ abstract class LaundretteParser {
    * @return DOMDocument
    *   DOMDocument from the HTML.
    */
-  private function loadDOM($html) {
+  protected function loadDOM($html) {
     $dom = new DOMDocument();
     // Silence warnings. The status page has multple divs with the same id
     // (imgExpand).
@@ -33,5 +32,5 @@ abstract class LaundretteParser {
     return $dom;
   }
 
-  abstract public function parse();
+  abstract public function parse($html);
 }

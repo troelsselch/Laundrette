@@ -2,6 +2,8 @@
 
 namespace Laundrette\Entity;
 
+use \DateTime;
+
 class Transaction {
   private $datetime;
   private $machine;
@@ -16,4 +18,12 @@ class Transaction {
     $this->amount = $amount;
   }
 
+  public function __toString() {
+    return sprintf('%s: %s, %s, %s',
+      get_class(),
+      $this->datetime->format('Y-m-d H:i:s'),
+      $this->machine,
+      $this->amount
+    );
+  }
 }

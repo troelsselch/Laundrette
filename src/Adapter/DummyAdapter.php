@@ -1,6 +1,6 @@
 <?php
 
-namespace Laundrette\Api\Adapter;
+namespace Laundrette\Adapter;
 
 class DummyAdapter implements AdapterInterface {
   private $base_path;
@@ -13,8 +13,16 @@ class DummyAdapter implements AdapterInterface {
   }
 
   public function call($path, $data = NULL) {
-    if (file_exists($this->base_path . $path)) {
+    $full_path = $this->base_path . $path;
+    if (file_exists($full_path)) {
       return utf8_decode(file_get_contents($this->base_path . $path));
     }
+    else {
+      throw new Exception("File '$full_path' not found");
+    }
+  }
+
+  public function close() {
+
   }
 }

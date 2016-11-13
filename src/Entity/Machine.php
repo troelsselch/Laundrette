@@ -11,4 +11,12 @@ class Machine {
     $this->name = $name;
     $this->state = $state;
   }
+
+  public function __toString() {
+    return sprintf('%s: %s, %s',
+      get_class(),
+      $this->name,
+      $this->state
+    );
+  }
 }

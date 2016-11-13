@@ -1,6 +1,11 @@
 <?php
 
-namespace Laundrette\Api;
+namespace Laundrette;
+
+use Laundrette\Adapter\AdapterInterface;
+use Laundrette\Parser\BookingMainParser;
+use Laundrette\Parser\LoadBalanceParser;
+use Laundrette\Parser\MachineGroupStatParser;
 
 class Laundrette {
   private $adapter;
@@ -20,7 +25,7 @@ class Laundrette {
   }
 
   public function getBalance() {
-    $data = getBalanceAndTransactions();
+    $data = $this->getBalanceAndTransactions();
 
     $balance = $data['balance'];
 
@@ -28,7 +33,7 @@ class Laundrette {
   }
 
   public function getTransactions() {
-    $data = getBalanceAndTransactions();
+    $data = $this->getBalanceAndTransactions();
 
     $transactions = $data['transactions'];
 
@@ -53,5 +58,9 @@ class Laundrette {
     $data = $parser->parse($html);
 
     return $data;
+  }
+
+  public function close() {
+    $this->adapter->close();
   }
 }

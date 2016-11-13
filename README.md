@@ -4,12 +4,17 @@ This is still in the early stages so interfaces might change.
 
 ## TODO
 
-- Autoloader
-- Proper namespace structure
-- Logger
-- Test cases using file adapter
+- Find TODOs, remove dies and prints.
+- Logger (should this be included in the api?)
+- Test cases using dummy adapter
 
 ## Usage:
+
+Create autoloader, run
+
+    composer install
+
+Example code:
 
     if (in_cache('transactions')) {
       $data = cache_get('transactions');
@@ -23,8 +28,15 @@ This is still in the early stages so interfaces might change.
 
 ## Testing
 
-      $base_path = "~/test_data/";
-      $adapter = new DummyAdapter($base_path);
-      $api = new Laundrette($adapter);
-      $data = $api->getTransactions();
+To run the test in `SimpleApiTest.php` you must log into vasketur.dk
+and save the pages to your local machine. You should save the following
 
+- Min side as `Booking/BookingMain.aspx`.
+- Status as `ELS_DEB/LoadBalance.aspx`.
+- Saldo as `Machine/MachineGroupStat.aspx`.
+
+The you can run the test as follows:
+
+    php SimpleApiTest.php
+
+This will output the data for the api calls.

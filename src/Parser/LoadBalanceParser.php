@@ -1,6 +1,10 @@
 <?php
 
-namespace Laundrette\Api\Parser;
+namespace Laundrette\Parser;
+
+use \DateTime;
+use \Laundrette\Entity\Machine;
+use \Laundrette\Entity\Transaction;
 
 class LoadBalanceParser extends LaundretteParser {
   const ROW_DATE = 0;
@@ -14,7 +18,9 @@ class LoadBalanceParser extends LaundretteParser {
     // Get balance.
     $element = $dom->getElementById(self::PREFIX . 'lbCurrentBalance');
     // TODO: error handling.
-    $balance = $element->nodeValue;
+    $balance_raw = $element->nodeValue;
+    $balance_raw = explode(':', $balance_raw);
+    $balance = trim($balance_raw[1]);
 
     // Get transactions.
     // Contains a simple table.
@@ -45,13 +51,13 @@ class LoadBalanceParser extends LaundretteParser {
             continue;
           }
 
-          $date_string = $row[ROW_DATE] . ' ' . $row[ROW_TIME];
+          $date_string = $row[self::ROW_DATE] . ' ' . $row[self::ROW_TIME];
           $date = DateTime::createFromFormat('Y-m-d H:i:s', $date_string);
 
-          $machine = new Machine($row[ROW_MACHINE]);
+          $machine = new Machine($row[self::ROW_MACHINE]);
 
           // String to integer, e.g. "28.46" to 2846.
-          $amount = floatval($row[ROW_AMOUNT]) * 100;
+          $amount = floatval($row[self::ROW_AMOUNT]) * 100;
 
           $transactions[] = new Transaction($date, $machine, $amount);
         }

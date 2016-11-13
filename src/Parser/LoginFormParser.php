@@ -1,6 +1,6 @@
 <?php
 
-namespace Laundrette\Api\Parser;
+namespace Laundrette\Parser;
 
 class LoginFormParser extends LaundretteParser {
 

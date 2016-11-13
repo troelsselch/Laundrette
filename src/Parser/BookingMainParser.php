@@ -1,6 +1,11 @@
 <?php
 
-namespace Laundrette\Api\Parser;
+namespace Laundrette\Parser;
+
+use \Exception;
+use \DateTime;
+use \Laundrette\Entity\Machine;
+use \Laundrette\Entity\Reservation;
 
 class BookingMainParser extends LaundretteParser {
 

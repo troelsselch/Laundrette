@@ -1,6 +1,9 @@
 <?php
 
-namespace Laundrette\Api\Parser;
+namespace Laundrette\Parser;
+
+use Laundrette\Entity\Machine;
+use Laundrette\Entity\MachineState;
 
 class MachineGroupStatParser extends LaundretteParser {
 
