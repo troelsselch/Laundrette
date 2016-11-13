@@ -69,7 +69,7 @@ class CurlAdapter implements AdapterInterface {
     }
     // TODO error handling
     if (curl_error($this->curl)) {
-      die(curl_error($this->curl));
+      throw new Exception(curl_error($this->curl));
     }
 
     return utf8_decode(curl_exec($this->curl));

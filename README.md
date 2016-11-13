@@ -4,9 +4,10 @@ This is still in the early stages so interfaces might change.
 
 ## TODO
 
-- Find TODOs, remove dies.
+- Find TODOs.
 - Logger (should this be included in the api?)
 - Test cases using dummy adapter
+- Class and method documentation.
 
 ## Usage:
 
