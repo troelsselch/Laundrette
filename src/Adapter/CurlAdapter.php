@@ -8,9 +8,8 @@ use \Laundrette\Parser\LoginFormParser;
 class CurlAdapter implements AdapterInterface {
   private $base_url;
   private $curl;
-  private $debug;
 
-  public function __construct($base_url, $username, $password, $debug = FALSE) {
+  public function __construct($base_url, $username, $password, $verbose = FALSE) {
     if (!function_exists('curl_exec')) {
       throw new Exception('PHP cUrl is not enabled.');
     }
@@ -28,8 +27,9 @@ class CurlAdapter implements AdapterInterface {
     curl_setopt($this->curl, CURLOPT_COOKIEJAR, $cookiefile);
     curl_setopt($this->curl, CURLOPT_FOLLOWLOCATION, TRUE);
 
-    // TODO Adapter shouldn't know if it should debug. Use logger instead.
-    $this->debug = $debug;
+    if ($verbose) {
+      curl_setopt($this->curl, CURLOPT_VERBOSE, TRUE);
+    }
 
     $this->login($username, $password);
   }
@@ -48,8 +48,8 @@ class CurlAdapter implements AdapterInterface {
     $parser = new LoginFormParser();
     $post_data = $parser->parse($html);
 
-    $post_data['_ctl0:ContentPlaceHolder1:tbUsername'] = $username,
-    $post_data['_ctl0:ContentPlaceHolder1:tbPassword'] = $password,
+    $post_data['_ctl0:ContentPlaceHolder1:tbUsername'] = $username;
+    $post_data['_ctl0:ContentPlaceHolder1:tbPassword'] = $password;
 
     // TODO check if "min side" is in html so we know if login succeded.
     // TODO error handling
@@ -58,15 +58,7 @@ class CurlAdapter implements AdapterInterface {
   }
 
   public function call($path, $data = NULL) {
-    if ($this->debug) {
-      print $this->base_url . $path . PHP_EOL;
-    }
-
     curl_setopt($this->curl, CURLOPT_URL, $this->base_url . $path);
-
-    if ($this->debug) {
-      curl_setopt($this->curl, CURLOPT_VERBOSE, TRUE);
-    }
 
     if ($data) {
       curl_setopt($this->curl, CURLOPT_POST, TRUE);

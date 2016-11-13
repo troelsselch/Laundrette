@@ -4,7 +4,7 @@ This is still in the early stages so interfaces might change.
 
 ## TODO
 
-- Find TODOs, remove dies and prints.
+- Find TODOs, remove dies.
 - Logger (should this be included in the api?)
 - Test cases using dummy adapter
 
