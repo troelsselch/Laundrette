@@ -56,3 +56,24 @@ Then you can run the test as follows:
     php test/SimpleApiTest.php
 
 This will output the data for the api calls.
+
+## Security
+
+This API takes your username and password as arguments, but they are not stored.
+However it is up to you to also avoid storing the username and password when
+using the API. By storing I mean on disk or in a database. You can of course
+store them in a `$_SESSION`.
+
+Also not that the `CurlAdapter` will create a cookiejar file holding a session
+token which also allows access to the site. This will be stored in the current
+working directory and will be called `cookiejar_[md5 hash].txt`.
+
+## Contributing
+
+Contributions are welcome, but I reserve the right to deny any pull requests.
+Contact me before making any changes if you would like to make sure your time is
+not wasted.
+
+## License
+
+Laundrette is released under the MIT License. See [LICENSE](https://github.com/troelsselch/Laundrette/blob/develop/LICENSE) file for details.
