@@ -7,16 +7,19 @@ use Laundrette\Parser\BookingMainParser;
 use Laundrette\Parser\LoadBalanceParser;
 use Laundrette\Parser\MachineGroupStatParser;
 
-class Laundrette {
-  private $adapter;
+class Laundrette
+{
+  private $_adapter;
 
-  public function __construct(AdapterInterface $adapter) {
-    $this->adapter = $adapter;
+  public function __construct(AdapterInterface $adapter)
+  {
+    $this->_adapter = $adapter;
   }
 
-  public function getReservations() {
+  public function getReservations()
+  {
     $path = 'Booking/BookingMain.aspx';
-    $html = $this->adapter->call($path);
+    $html = $this->_adapter->call($path);
 
     $parser = new BookingMainParser();
     $data = $parser->parse($html);
@@ -24,7 +27,8 @@ class Laundrette {
     return $data;
   }
 
-  public function getBalance() {
+  public function getBalance()
+  {
     $data = $this->getBalanceAndTransactions();
 
     $balance = $data['balance'];
@@ -32,7 +36,8 @@ class Laundrette {
     return $balance;
   }
 
-  public function getTransactions() {
+  public function getTransactions()
+  {
     $data = $this->getBalanceAndTransactions();
 
     $transactions = $data['transactions'];
@@ -40,9 +45,10 @@ class Laundrette {
     return $transactions;
   }
 
-  public function getBalanceAndTransactions() {
+  public function getBalanceAndTransactions()
+  {
     $path = 'ELS_DEB/LoadBalance.aspx';
-    $html = $this->adapter->call($path);
+    $html = $this->_adapter->call($path);
 
     $parser = new LoadBalanceParser();
     $data = $parser->parse($html);
@@ -50,9 +56,10 @@ class Laundrette {
     return $data;
   }
 
-  public function getMachineStates() {
+  public function getMachineStates()
+  {
     $path = 'Machine/MachineGroupStat.aspx';
-    $html = $this->adapter->call($path);
+    $html = $this->_adapter->call($path);
 
     $parser = new MachineGroupStatParser();
     $data = $parser->parse($html);
@@ -60,7 +67,8 @@ class Laundrette {
     return $data;
   }
 
-  public function close() {
+  public function close()
+  {
     $this->adapter->close();
   }
 }

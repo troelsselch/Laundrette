@@ -4,7 +4,8 @@ namespace Laundrette\Parser;
 
 use \DOMDocument;
 
-abstract class LaundretteParser {
+abstract class LaundretteParser
+{
 
   /**
    * @var PREFIX
@@ -22,7 +23,8 @@ abstract class LaundretteParser {
    * @return DOMDocument
    *   DOMDocument from the HTML.
    */
-  protected function loadDOM($html) {
+  protected function loadDOM($html)
+  {
     $dom = new DOMDocument();
     // Silence warnings. The status page has multple divs with the same id
     // (imgExpand).

@@ -2,12 +2,14 @@
 
 namespace Laundrette\Parser;
 
-class LoginFormParser extends LaundretteParser {
+class LoginFormParser extends LaundretteParser
+{
 
-  public function parse($html) {
+  public function parse($html)
+  {
     $dom = $this->loadDOM($html);
 
-    $post_data = array(
+    $postData = array(
       '_ctl0:MessageType' => 'ERROR',
       '__EVENTTARGET' => '_ctl0$ContentPlaceHolder1$btOK',
       '__EVENTARGUMENT' => '',
@@ -15,16 +17,16 @@ class LoginFormParser extends LaundretteParser {
 
     $element = $dom->getElementById('__VIEWSTATEGENERATOR');
     $value = ($element ? $element->getAttribute('value') : '');
-    $post_data['__VIEWSTATEGENERATOR'] = $value;
+    $postData['__VIEWSTATEGENERATOR'] = $value;
 
     $element = $dom->getElementById('__VIEWSTATE');
     $value = ($element ? $element->getAttribute('value') : '');
-    $post_data['__VIEWSTATE'] = $value;
+    $postData['__VIEWSTATE'] = $value;
 
     $element = $dom->getElementById('__EVENTVALIDATION');
     $value = ($element ? $element->getAttribute('value') : '');
-    $post_data['__EVENTVALIDATION'] = $value;
+    $postData['__EVENTVALIDATION'] = $value;
 
-    return $post_data;
+    return $postData;
   }
 }

@@ -9,13 +9,12 @@ use Laundrette\Adapter\CurlAdapter;
 if (count($argv) > 2) {
   $username = $argv[1];
   $password = $argv[2];
-  $base_path = 'http://vask.vasketur.dk/030/';
-  $adapter = new CurlAdapter($base_path, $username, $password);
+  $basePath = 'http://vask.vasketur.dk/030/';
+  $adapter = new CurlAdapter($basePath, $username, $password);
   print PHP_EOL . "Using CurlAdapter" . PHP_EOL;
-}
-else {
-  $base_path = '/home/troels/workspace/vasketur-api-testdata/';
-  $adapter = new DummyAdapter($base_path);
+} else {
+  $basePath = '/home/troels/workspace/vasketur-api-testdata/';
+  $adapter = new DummyAdapter($basePath);
   print PHP_EOL . "Using DummyAdapter" . PHP_EOL;
 }
 
@@ -37,20 +36,19 @@ $data = $api->getMachineStates();
 print "=== MachineStates ===" . PHP_EOL;
 output($data);
 
-function output($data) {
+function output($data)
+{
   if (is_array($data)) {
     foreach ($data as $datum) {
       if (is_array($datum)) {
         foreach ($datum as $d) {
           print $d . PHP_EOL;
         }
-      }
-      else {
+      } else {
         print $datum . PHP_EOL;
       }
     }
-  }
-  else {
+  } else {
     print $data . PHP_EOL;
   }
   print PHP_EOL;

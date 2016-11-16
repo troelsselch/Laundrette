@@ -6,21 +6,23 @@ use \DateTime;
 use \Laundrette\Entity\Machine;
 use \Laundrette\Entity\Transaction;
 
-class LoadBalanceParser extends LaundretteParser {
+class LoadBalanceParser extends LaundretteParser
+{
   const ROW_DATE = 0;
   const ROW_TIME = 1;
   const ROW_MACHINE = 2;
   const ROW_AMOUNT = 3;
 
-  public function parse($html) {
+  public function parse($html)
+  {
     $dom = $this->loadDOM($html);
 
     // Get balance.
     $element = $dom->getElementById(self::PREFIX . 'lbCurrentBalance');
     // TODO: error handling.
-    $balance_raw = $element->nodeValue;
-    $balance_raw = explode(':', $balance_raw);
-    $balance = trim($balance_raw[1]);
+    $balanceRaw = $element->nodeValue;
+    $balanceRaw = explode(':', $balanceRaw);
+    $balance = trim($balanceRaw[1]);
 
     // Get transactions.
     // Contains a simple table.
@@ -29,7 +31,8 @@ class LoadBalanceParser extends LaundretteParser {
     $table = NULL;
     // Locate the table node.
     foreach ($element->childNodes as $childNode) {
-      if (get_class($childNode) == 'DOMElement' && $childNode->tagName == 'table') {
+      if (get_class($childNode) == 'DOMElement'
+        && $childNode->tagName == 'table') {
         $table = $childNode;
         break;
       }
@@ -51,8 +54,8 @@ class LoadBalanceParser extends LaundretteParser {
             continue;
           }
 
-          $date_string = $row[self::ROW_DATE] . ' ' . $row[self::ROW_TIME];
-          $date = DateTime::createFromFormat('Y-m-d H:i:s', $date_string);
+          $dateString = $row[self::ROW_DATE] . ' ' . $row[self::ROW_TIME];
+          $date = DateTime::createFromFormat('Y-m-d H:i:s', $dateString);
 
           $machine = new Machine($row[self::ROW_MACHINE]);
 
