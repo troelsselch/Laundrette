@@ -54,7 +54,7 @@ class CurlAdapter implements AdapterInterface {
     // TODO check if "min side" is in html so we know if login succeded.
     // TODO error handling
     // Perform login post request.
-    $this->adapter->call($path, $post_data);
+    $this->call($path, $post_data);
   }
 
   public function call($path, $data = NULL) {

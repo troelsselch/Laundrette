@@ -4,9 +4,21 @@ require 'vendor/autoload.php';
 
 use Laundrette\Laundrette;
 use Laundrette\Adapter\DummyAdapter;
+use Laundrette\Adapter\CurlAdapter;
 
-$base_path = '/home/troels/workspace/vasketur-api-testdata/';
-$adapter = new DummyAdapter($base_path);
+if (count($argv) > 2) {
+  $username = $argv[1];
+  $password = $argv[2];
+  $base_path = 'http://vask.vasketur.dk/030/';
+  $adapter = new CurlAdapter($base_path, $username, $password);
+  print PHP_EOL . "Using CurlAdapter" . PHP_EOL;
+}
+else {
+  $base_path = '/home/troels/workspace/vasketur-api-testdata/';
+  $adapter = new DummyAdapter($base_path);
+  print PHP_EOL . "Using DummyAdapter" . PHP_EOL;
+}
+
 $api = new Laundrette($adapter);
 
 $data = $api->getTransactions();

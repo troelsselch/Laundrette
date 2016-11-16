@@ -14,15 +14,15 @@ class LoginFormParser extends LaundretteParser {
     );
 
     $element = $dom->getElementById('__VIEWSTATEGENERATOR');
-    $value = ($element ? $element->getAttribute('value') : '';
+    $value = ($element ? $element->getAttribute('value') : '');
     $post_data['__VIEWSTATEGENERATOR'] = $value;
 
     $element = $dom->getElementById('__VIEWSTATE');
-    $value = ($element ? $element->getAttribute('value') : '';
+    $value = ($element ? $element->getAttribute('value') : '');
     $post_data['__VIEWSTATE'] = $value;
 
     $element = $dom->getElementById('__EVENTVALIDATION');
-    $value = ($element ? $element->getAttribute('value') : '';
+    $value = ($element ? $element->getAttribute('value') : '');
     $post_data['__EVENTVALIDATION'] = $value;
 
     return $post_data;
