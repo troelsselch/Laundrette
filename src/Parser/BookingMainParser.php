@@ -7,7 +7,8 @@ use \DateTime;
 use \Laundrette\Entity\Machine;
 use \Laundrette\Entity\Reservation;
 
-class BookingMainParser extends LaundretteParser {
+class BookingMainParser extends LaundretteParser
+{
 
   /**
    * @var BOOKING_DATE
@@ -38,38 +39,45 @@ class BookingMainParser extends LaundretteParser {
   const BOOKING_END_TIME = 4;
 
 
-  public function parse($html) {
+  public function parse($html)
+  {
     $dom = $this->loadDOM($html);
 
-    $bookings_headline_id = self::PREFIX . 'lbBokningarRubrik';
-    $bookings_id = self::PREFIX . 'DataGridBookings';
+    $bookingsHeadlineId = self::PREFIX . 'lbBokningarRubrik';
+    $bookingsId = self::PREFIX . 'DataGridBookings';
 
     $data = array(
       'message' => '',
       'reservations' => array(),
     );
 
-    // lbBokningarRubrik = "Du har ikke bestilt noget." og DataGridBookings = empty table
-    // lbBokningarRubrik = "Dine nuværende bestillinger ( 2 )" og DataGridBookings = x antal <tr>s
+    // lbBokningarRubrik = "Du har ikke bestilt noget." og
+    // DataGridBookings = empty table
+    // lbBokningarRubrik = "Dine nuværende bestillinger ( 2 )" og
+    // DataGridBookings = x antal <tr>s
     // TODO New error handling.
-    $headline_element = $dom->getElementById($bookings_headline_id);
-    if (is_null($headline_element)) {
-      $file_hash = md5($html);
-      $file_name = $file_hash . "_bookingmain.html";
-      file_put_contents($file_name, $html);
-      $message = 'Could not parse dom for file ' . getcwd() . '/' . $file_name;
+    $headlineElement = $dom->getElementById($bookingsHeadlineId);
+    if (is_null($headlineElement)) {
+      $fileHash = md5($html);
+      $fileName = $fileHash . "_bookingmain.html";
+      file_put_contents($fileName, $html);
+      $message = 'Could not parse dom for file ' . getcwd() . '/' . $fileName;
       error_log($message);
       return NULL;
     }
 
-    $parenthesis_pos = strpos($headline_element->nodeValue, '(');
-    if ($parenthesis_pos !== FALSE) {
-      $data['message'] = substr($headline_element->nodeValue, 0, $parenthesis_pos-1);
+    $parenthesisPos = strpos($headlineElement->nodeValue, '(');
+    if ($parenthesisPos !== FALSE) {
+      $data['message'] = substr(
+          $headlineElement->nodeValue,
+          0,
+          $parenthesisPos-1
+      );
     } else {
-      $data['message'] = $headline_element->nodeValue;
+      $data['message'] = $headlineElement->nodeValue;
     }
 
-    $element = $dom->getElementById($bookings_id);
+    $element = $dom->getElementById($bookingsId);
 
     if (empty($element->nodeValue)) {
       return $data;
@@ -96,25 +104,25 @@ class BookingMainParser extends LaundretteParser {
 
         switch ($column % 6) {
           case self::BOOKING_DATE:
-            $row['date'] = $td->nodeValue;
-            break;
+              $row['date'] = $td->nodeValue;
+              break;
 
           case self::BOOKING_MACHINE:
-            $row['machine'] = $td->nodeValue;
-            break;
+              $row['machine'] = $td->nodeValue;
+              break;
 
           case self::BOOKING_START_TIME:
-            $row['start_time'] = $td->nodeValue;
-            break;
+              $row['start_time'] = $td->nodeValue;
+              break;
 
           // TODO Remove BOOKING_END_TIME since it is not being used.
           case self::BOOKING_END_TIME:
-            $row['end_time'] = $td->nodeValue;
-            break;
+              $row['end_time'] = $td->nodeValue;
+              break;
 
           default:
-            // Ignore split and cancel button
-            break;
+              // Ignore split and cancel button
+              break;
         }
 
         $column++;
@@ -132,8 +140,8 @@ class BookingMainParser extends LaundretteParser {
       // Remove week day (i.e. everything before the first space).
       $row['date'] = preg_replace('/^[^ ]* \s*/', '', $row['date']);
 
-      $date_string = $row['date'] . ' ' . $row['start_time'];
-      $starttime = DateTime::createFromFormat('j M H:i', $date_string);
+      $dateString = $row['date'] . ' ' . $row['start_time'];
+      $starttime = DateTime::createFromFormat('j M H:i', $dateString);
 
       $machine = new Machine($row['machine']);
 

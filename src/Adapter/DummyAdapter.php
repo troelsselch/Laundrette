@@ -2,27 +2,30 @@
 
 namespace Laundrette\Adapter;
 
-class DummyAdapter implements AdapterInterface {
-  private $base_path;
+class DummyAdapter implements AdapterInterface
+{
+  private $_basePath;
 
-  public function __construct($base_path) {
-    if (substr($base_path, -1) != '/') {
-      $base_path .= '/';
+  public function __construct($basePath)
+  {
+    if (substr($basePath, -1) != '/') {
+      $basePath .= '/';
     }
-    $this->base_path = $base_path;
+    $this->_basePath = $basePath;
   }
 
-  public function call($path, $data = NULL) {
-    $full_path = $this->base_path . $path;
-    if (file_exists($full_path)) {
-      return utf8_decode(file_get_contents($this->base_path . $path));
-    }
-    else {
-      throw new Exception("File '$full_path' not found");
+  public function call($path, $data = NULL)
+  {
+    $fullPath = $this->_basePath . $path;
+    if (file_exists($fullPath)) {
+      return utf8_decode(file_get_contents($this->_basePath . $path));
+    } else {
+      throw new Exception("File '$fullPath' not found");
     }
   }
 
-  public function close() {
+  public function close()
+  {
 
   }
 }
