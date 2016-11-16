@@ -76,4 +76,4 @@ not wasted.
 
 ## License
 
-Laundrette is released under the MIT License. See [LICENSE](https://github.com/troelsselch/Laundrette/blob/develop/LICENSE) file for details.
+Laundrette is released under the MIT License. See [LICENSE](https://github.com/troelsselch/Laundrette/blob/master/LICENSE) file for details.
