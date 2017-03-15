@@ -24,7 +24,7 @@ You cannot (yet) make any reservations using this API.
 
 Find your laundrette url. This will be unique for each laundrette. You need to
 be aware of both the subdomain (before `vasketur.dk`) and the id (after
-`vasktur.dk`), e.g. for http://**vask**.vasketur.dk/**030**.
+`vasketur.dk`), e.g. for http://**vask**.vasketur.dk/**030**.
 
 Create autoloader using composer. Run
 
