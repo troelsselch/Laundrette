@@ -12,7 +12,7 @@ abstract class LaundretteParser
    *
    * Prefix used by all variables.
    */
-  const PREFIX = '_ctl0_ContentPlaceHolder1_';
+    const PREFIX = '_ctl0_ContentPlaceHolder1_';
 
   /**
    * Helper function to load the DOM from an HTML string.
@@ -23,16 +23,16 @@ abstract class LaundretteParser
    * @return DOMDocument
    *   DOMDocument from the HTML.
    */
-  protected function loadDOM($html)
-  {
-    $dom = new DOMDocument();
-    // Silence warnings. The status page has multple divs with the same id
-    // (imgExpand).
-    @$dom->loadHTML($html);
-    $dom->preserveWhiteSpace = FALSE;
+    protected function loadDOM($html)
+    {
+        $dom = new DOMDocument();
+      // Silence warnings. The status page has multple divs with the same id
+      // (imgExpand).
+        @$dom->loadHTML($html);
+        $dom->preserveWhiteSpace = false;
 
-    return $dom;
-  }
+        return $dom;
+    }
 
-  abstract public function parse($html);
+    abstract public function parse($html);
 }
