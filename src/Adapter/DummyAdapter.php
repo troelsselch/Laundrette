@@ -4,21 +4,21 @@ namespace Laundrette\Adapter;
 
 class DummyAdapter implements AdapterInterface
 {
-    private $_basePath;
+    private $basePath;
 
     public function __construct($basePath)
     {
         if (substr($basePath, -1) != '/') {
             $basePath .= '/';
         }
-        $this->_basePath = $basePath;
+        $this->basePath = $basePath;
     }
 
     public function call($path, $data = null)
     {
-        $fullPath = $this->_basePath . $path;
+        $fullPath = $this->basePath . $path;
         if (file_exists($fullPath)) {
-            return utf8_decode(file_get_contents($this->_basePath . $path));
+            return utf8_decode(file_get_contents($this->basePath . $path));
         } else {
             throw new Exception("File '$fullPath' not found");
         }

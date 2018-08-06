@@ -6,14 +6,14 @@ use \DateTime;
 
 class Reservation
 {
-  // Start time. End time will be 2 hours later.
-    private $_datetime;
-    private $_machine;
+    // Start time. End time will be 2 hours later.
+    private $datetime;
+    private $machine;
 
     public function __construct(DateTime $datetime, Machine $machine)
     {
-        $this->_datetime = clone $datetime;
-        $this->_machine = clone $machine;
+        $this->datetime = clone $datetime;
+        $this->machine = clone $machine;
     }
 
     public function __toString()
@@ -21,8 +21,8 @@ class Reservation
         return sprintf(
             '%s: %s, %s',
             get_class(),
-            $this->_datetime->format('Y-m-d H:i:s'),
-            $this->_machine
+            $this->datetime->format('Y-m-d H:i:s'),
+            $this->machine
         );
     }
 }

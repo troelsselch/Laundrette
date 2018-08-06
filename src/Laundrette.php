@@ -9,17 +9,17 @@ use Laundrette\Parser\MachineGroupStatParser;
 
 class Laundrette
 {
-    private $_adapter;
+    private $adapter;
 
     public function __construct(AdapterInterface $adapter)
     {
-        $this->_adapter = $adapter;
+        $this->adapter = $adapter;
     }
 
     public function getReservations()
     {
         $path = 'Booking/BookingMain.aspx';
-        $html = $this->_adapter->call($path);
+        $html = $this->adapter->call($path);
 
         $parser = new BookingMainParser();
         $data = $parser->parse($html);
@@ -48,7 +48,7 @@ class Laundrette
     public function getBalanceAndTransactions()
     {
         $path = 'ELS_DEB/LoadBalance.aspx';
-        $html = $this->_adapter->call($path);
+        $html = $this->adapter->call($path);
 
         $parser = new LoadBalanceParser();
         $data = $parser->parse($html);
@@ -59,7 +59,7 @@ class Laundrette
     public function getMachineStates()
     {
         $path = 'Machine/MachineGroupStat.aspx';
-        $html = $this->_adapter->call($path);
+        $html = $this->adapter->call($path);
 
         $parser = new MachineGroupStatParser();
         $data = $parser->parse($html);

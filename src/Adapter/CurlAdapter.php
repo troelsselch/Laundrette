@@ -7,8 +7,8 @@ use \Laundrette\Parser\LoginFormParser;
 
 class CurlAdapter implements AdapterInterface
 {
-    private $_baseUrl;
-    private $_curl;
+    private $baseUrl;
+    private $curl;
 
     public function __construct($baseUrl, $username, $password, $verbose = false)
     {
@@ -19,18 +19,18 @@ class CurlAdapter implements AdapterInterface
         if (substr($baseUrl, -1) != '/') {
             $baseUrl .= '/';
         }
-        $this->_baseUrl = $baseUrl;
+        $this->baseUrl = $baseUrl;
 
       // Set up curl.
-        $this->_curl = curl_init();
-        curl_setopt($this->_curl, CURLOPT_RETURNTRANSFER, true);
+        $this->curl = curl_init();
+        curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
         $cookiefile = './cookiejar_' . md5($username . $password) . '.txt';
-        curl_setopt($this->_curl, CURLOPT_COOKIEFILE, $cookiefile);
-        curl_setopt($this->_curl, CURLOPT_COOKIEJAR, $cookiefile);
-        curl_setopt($this->_curl, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($this->curl, CURLOPT_COOKIEFILE, $cookiefile);
+        curl_setopt($this->curl, CURLOPT_COOKIEJAR, $cookiefile);
+        curl_setopt($this->curl, CURLOPT_FOLLOWLOCATION, true);
 
         if ($verbose) {
-            curl_setopt($this->_curl, CURLOPT_VERBOSE, true);
+            curl_setopt($this->curl, CURLOPT_VERBOSE, true);
         }
 
         $this->login($username, $password);
@@ -62,25 +62,25 @@ class CurlAdapter implements AdapterInterface
 
     public function call($path, $data = null)
     {
-        curl_setopt($this->_curl, CURLOPT_URL, $this->_baseUrl . $path);
+        curl_setopt($this->curl, CURLOPT_URL, $this->baseUrl . $path);
 
         if ($data) {
-            curl_setopt($this->_curl, CURLOPT_POST, true);
-            curl_setopt($this->_curl, CURLOPT_POSTFIELDS, http_build_query($data));
+            curl_setopt($this->curl, CURLOPT_POST, true);
+            curl_setopt($this->curl, CURLOPT_POSTFIELDS, http_build_query($data));
         } else {
-            curl_setopt($this->_curl, CURLOPT_POST, false);
-            curl_setopt($this->_curl, CURLOPT_POSTFIELDS, null);
+            curl_setopt($this->curl, CURLOPT_POST, false);
+            curl_setopt($this->curl, CURLOPT_POSTFIELDS, null);
         }
       // TODO error handling
-        if (curl_error($this->_curl)) {
-            throw new Exception(curl_error($this->_curl));
+        if (curl_error($this->curl)) {
+            throw new Exception(curl_error($this->curl));
         }
 
-        return utf8_decode(curl_exec($this->_curl));
+        return utf8_decode(curl_exec($this->curl));
     }
 
     public function close()
     {
-        curl_close($this->_curl);
+        curl_close($this->curl);
     }
 }
