@@ -1,3 +1,4 @@
 .idea
 vendor/*
 cookiejar_*.txt
+coverage

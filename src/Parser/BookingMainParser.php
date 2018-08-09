@@ -10,32 +10,32 @@ use \Laundrette\Entity\Reservation;
 class BookingMainParser extends LaundretteParser
 {
 
-  /**
-   * @var BOOKING_DATE
-   *
-   * Column of the date in the booking result.
-   */
+    /**
+     * @var int
+     *
+     * Column of the date in the booking result.
+     */
     const BOOKING_DATE = 0;
 
-  /**
-   * @var BOOKING_MACHINE
-   *
-   * Column of the machine name in the booking result.
-   */
+   /**
+    * @var int
+    *
+    * Column of the machine name in the booking result.
+    */
     const BOOKING_MACHINE = 1;
 
-  /**
-   * @var BOOKING_START_TIME
-   *
-   * Column of the start time in the booking result.
-   */
+   /**
+    * @var int
+    *
+    * Column of the start time in the booking result.
+    */
     const BOOKING_START_TIME = 2;
 
-  /**
-   * @var BOOKING_END_TIME
-   *
-   * Column of the end time in the booking result.
-   */
+   /**
+    * @var int
+    *
+    * Column of the end time in the booking result.
+    */
     const BOOKING_END_TIME = 4;
 
 
@@ -51,11 +51,11 @@ class BookingMainParser extends LaundretteParser
         'reservations' => array(),
         );
 
-      // lbBokningarRubrik = "Du har ikke bestilt noget." og
-      // DataGridBookings = empty table
-      // lbBokningarRubrik = "Dine nuværende bestillinger ( 2 )" og
-      // DataGridBookings = x antal <tr>s
-      // TODO New error handling.
+        // lbBokningarRubrik = "Du har ikke bestilt noget." og
+        // DataGridBookings = empty table
+        // lbBokningarRubrik = "Dine nuværende bestillinger ( 2 )" og
+        // DataGridBookings = x antal <tr>s
+        // TODO New error handling.
         $headlineElement = $dom->getElementById($bookingsHeadlineId);
         if (is_null($headlineElement)) {
             $fileHash = md5($html);

@@ -15,6 +15,7 @@ mobile friendly.
 - Class and method documentation.
 - Show available time slots.
 - "Make reservations" functionality.
+- Run tests twith vendor/bin/phpunit. Create code coverage with vendor/bin/phpunit --coverage-html coverage
 
 ## Limitations
 

@@ -21,7 +21,7 @@ class CurlAdapter implements AdapterInterface
         }
         $this->baseUrl = $baseUrl;
 
-      // Set up curl.
+        // Set up curl.
         $this->curl = curl_init();
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
         $cookiefile = './cookiejar_' . md5($username . $password) . '.txt';
@@ -39,24 +39,24 @@ class CurlAdapter implements AdapterInterface
     private function login($username, $password)
     {
         $path = 'Default.aspx';
-      // Get login form.
+        // Get login form.
         $html = $this->call($path);
 
-      // If the text 'Min side' is on the page, then we are already logged in.
+        // If the text 'Min side' is on the page, then we are already logged in.
         if (preg_match('/min side/i', $html)) {
             return;
         }
 
-      // Parse login form tokens to be used in post request.
+        // Parse login form tokens to be used in post request.
         $parser = new LoginFormParser();
         $postData = $parser->parse($html);
 
         $postData['_ctl0:ContentPlaceHolder1:tbUsername'] = $username;
         $postData['_ctl0:ContentPlaceHolder1:tbPassword'] = $password;
 
-      // TODO check if "min side" is in html so we know if login succeded.
-      // TODO error handling
-      // Perform login post request.
+        // TODO check if "min side" is in html so we know if login succeded.
+        // TODO error handling
+        // Perform login post request.
         $this->call($path, $postData);
     }
 
@@ -67,11 +67,9 @@ class CurlAdapter implements AdapterInterface
         if ($data) {
             curl_setopt($this->curl, CURLOPT_POST, true);
             curl_setopt($this->curl, CURLOPT_POSTFIELDS, http_build_query($data));
-        } else {
-            curl_setopt($this->curl, CURLOPT_POST, false);
-            curl_setopt($this->curl, CURLOPT_POSTFIELDS, null);
         }
-      // TODO error handling
+
+        // TODO error handling
         if (curl_error($this->curl)) {
             throw new Exception(curl_error($this->curl));
         }
