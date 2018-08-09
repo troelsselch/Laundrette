@@ -1,3 +1,5 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f9b8e782735f42b98896fab67c19edd3)](https://www.codacy.com/project/troelsselch/Laundrette/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=troelsselch/Laundrette&amp;utm_campaign=Badge_Grade_Dashboard)
+
 # Laundrette
 
 A PHP interface for getting information from vasketur.dk in parseable data
