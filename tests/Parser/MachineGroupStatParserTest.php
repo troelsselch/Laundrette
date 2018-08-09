@@ -11,9 +11,9 @@ class MachineGroupStatParserTest extends TestCase
     {
         $fixture = $this->getFixture('Machine/MachineGroupStat.aspx');
         $parser = new MachineGroupStatParser();
-        $b = $parser->parse($fixture);
+        $data = $parser->parse($fixture);
 
-        $this->assertEquals(5, count($b));
-        $this->assertInstanceOf('Laundrette\Entity\MachineState', $b[0]);
+        $this->assertEquals(5, count($data));
+        $this->assertInstanceOf('Laundrette\Entity\MachineState', $data[0]);
     }
 }

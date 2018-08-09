@@ -11,9 +11,9 @@ class BookingMainParserTest extends TestCase
     {
         $fixture = $this->getFixture('Booking/BookingMain.aspx');
         $parser = new BookingMainParser();
-        $b = $parser->parse($fixture);
+        $data = $parser->parse($fixture);
 
-        $this->assertEquals("Dine nuværende bestillinger", $b['message']);
-        $this->assertEquals(2, count($b['reservations']));
+        $this->assertEquals("Dine nuværende bestillinger", $data['message']);
+        $this->assertEquals(2, count($data['reservations']));
     }
 }

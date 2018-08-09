@@ -6,17 +6,14 @@ use Laundrette\Laundrette;
 use Laundrette\Adapter\DummyAdapter;
 use Laundrette\Adapter\CurlAdapter;
 
-if (count($argv) > 2) {
-  $username = $argv[1];
-  $password = $argv[2];
-  $basePath = 'http://vask.vasketur.dk/030/';
-  $adapter = new CurlAdapter($basePath, $username, $password);
-  print PHP_EOL . "Using CurlAdapter" . PHP_EOL;
-} else {
-  $basePath = '/home/troels/workspace/vasketur-api-testdata/';
-  $adapter = new DummyAdapter($basePath);
-  print PHP_EOL . "Using DummyAdapter" . PHP_EOL;
+if (count($argv) < 2) {
+    print "Missing arguments";
 }
+$username = $argv[1];
+$password = $argv[2];
+$basePath = 'http://vask.vasketur.dk/030/';
+$adapter = new CurlAdapter($basePath, $username, $password);
+print PHP_EOL . "Using CurlAdapter" . PHP_EOL;
 
 $api = new Laundrette($adapter);
 
@@ -38,20 +35,20 @@ output($data);
 
 function output($data)
 {
-  if (is_array($data)) {
-    foreach ($data as $datum) {
-      if (is_array($datum)) {
-        foreach ($datum as $d) {
-          print $d . PHP_EOL;
+    if (is_array($data)) {
+        foreach ($data as $datum) {
+            if (is_array($datum)) {
+                foreach ($datum as $d) {
+                    print $d . PHP_EOL;
+                }
+            } else {
+                print $datum . PHP_EOL;
+            }
         }
-      } else {
-        print $datum . PHP_EOL;
-      }
+    } else {
+        print $data . PHP_EOL;
     }
-  } else {
-    print $data . PHP_EOL;
-  }
-  print PHP_EOL;
+    print PHP_EOL;
 }
 
 $api->close();

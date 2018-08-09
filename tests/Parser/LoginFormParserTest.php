@@ -11,11 +11,11 @@ class LoginFormParserTest extends TestCase
     {
         $fixture = $this->getFixture('DefaultLogin.html');
         $parser = new LoginFormParser();
-        $b = $parser->parse($fixture);
+        $data = $parser->parse($fixture);
 
-        $this->assertEquals('_ctl0$ContentPlaceHolder1$btOK', $b['__EVENTTARGET']);
-        $this->assertEquals('EF7E10', $b['__VIEWSTATEGENERATOR']);
-        $this->assertEquals('/wEPDwUJLTY3OTUyMjQ4D2QWAmYPZBYCAgMPZBYGAgEPDxYCHgdWaXNpYmxlaGQWAmYPFQEHTG9nIGlu', $b['__VIEWSTATE']);
-        $this->assertEquals('/wEWBgKKmN/lAwKYhs/kAgKjkuQsAvbzwL0OAriY0qc4=', $b['__EVENTVALIDATION']);
+        $this->assertEquals('_ctl0$ContentPlaceHolder1$btOK', $data['__EVENTTARGET']);
+        $this->assertEquals('EF7E10', $data['__VIEWSTATEGENERATOR']);
+        $this->assertEquals('/wEPDwUJLTY3OTUyMjQ4D2QWAmYPZBYCAgMPZBYGAgEPDxYCHgdWaXNpYmxlaGQWAmYPFQEHTG9nIGlu', $data['__VIEWSTATE']);
+        $this->assertEquals('/wEWBgKKmN/lAwKYhs/kAgKjkuQsAvbzwL0OAriY0qc4=', $data['__EVENTVALIDATION']);
     }
 }

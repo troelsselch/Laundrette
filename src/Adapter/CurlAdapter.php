@@ -2,8 +2,8 @@
 
 namespace Laundrette\Adapter;
 
-use \Exception;
-use \Laundrette\Parser\LoginFormParser;
+use Exception;
+use Laundrette\Parser\LoginFormParser;
 
 class CurlAdapter implements AdapterInterface
 {
