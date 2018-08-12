@@ -2,3 +2,5 @@
 vendor/*
 cookiejar_*.txt
 coverage
+build
+DONOTCOMMIT
