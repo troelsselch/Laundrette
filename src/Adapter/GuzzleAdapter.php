@@ -60,9 +60,6 @@ class GuzzleAdapter implements AdapterInterface
 
         $response = $this->guzzle->request($method, $path, $options);
 
-        print "::: response\n";
-        var_dump($response);
-
         return utf8_decode($response->getBody());
     }
 }
