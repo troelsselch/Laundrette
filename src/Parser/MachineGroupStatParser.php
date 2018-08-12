@@ -2,6 +2,7 @@
 
 namespace Laundrette\Parser;
 
+use Exception;
 use Laundrette\Entity\Machine;
 use Laundrette\Entity\MachineState;
 
@@ -12,7 +13,7 @@ class MachineGroupStatParser extends LaundretteParser
     {
         $dom = $this->loadDOM($html);
 
-        $machineData = [];
+        $data = [];
 
         $machineIds = [
             self::PREFIX . 'Repeater1__ctl0_Repeater2__ctl0',
@@ -29,14 +30,10 @@ class MachineGroupStatParser extends LaundretteParser
             );
             $bookedbymeElement = $dom->getElementById($id . '_BookedByMe');
 
-            // TODO: new error handling.
             if (is_null($bookedbymeElement) || is_null($nameElement)) {
-                $fileHash = md5($html);
-                $fileName = $fileHash . "_machinegroupstat.html";
-                file_put_contents($fileName, $html);
+                $fileName = $this->saveHtml($html);
                 $message = 'Could not parse dom for file ' . getcwd() . '/' . $fileName;
-                error_log($message);
-                return null;
+                throw new Exception($message);
             }
 
             $name = $nameElement->nodeValue;
@@ -52,10 +49,10 @@ class MachineGroupStatParser extends LaundretteParser
             $available = !empty($match);
 
             $machine = new Machine($name, $state);
-            $machineData[] = new MachineState($machine, $bookedByMe,
+            $data[] = new MachineState($machine, $bookedByMe,
                 $available);
         }
 
-        return $machineData;
+        return $data;
     }
 }

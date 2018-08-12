@@ -2,10 +2,11 @@
 
 namespace Laundrette\Parser;
 
-use \Exception;
-use \DateTime;
-use \Laundrette\Entity\Machine;
-use \Laundrette\Entity\Reservation;
+use Exception;
+use DateTime;
+use DOMElement;
+use Laundrette\Entity\Machine;
+use Laundrette\Entity\Reservation;
 
 class BookingMainParser extends LaundretteParser
 {
@@ -34,19 +35,19 @@ class BookingMainParser extends LaundretteParser
             'reservations' => [],
         ];
 
-        // lbBokningarRubrik = "Du har ikke bestilt noget." og
-        // DataGridBookings = empty table
-        // lbBokningarRubrik = "Dine nuværende bestillinger ( 2 )" og
-        // DataGridBookings = x antal <tr>s
-        // TODO New error handling.
+        /**
+         * Example data.
+         * lbBokningarRubrik = "Du har ikke bestilt noget." og
+         * DataGridBookings = empty table
+         *
+         * lbBokningarRubrik = "Dine nuværende bestillinger ( 2 )" og
+         * DataGridBookings = 2 <tr>s
+         */
         $headlineElement = $dom->getElementById($bookingsHeadlineId);
         if (is_null($headlineElement)) {
-            $fileHash = md5($html);
-            $fileName = $fileHash . "_bookingmain.html";
-            file_put_contents($fileName, $html);
-            $message = 'Could not parse dom for file ' . getcwd() . '/' . $fileName;
-            error_log($message);
-            return null;
+            $fileName = $this->saveHtml($html);
+            $message = sprintf('Could not parse dom for file %s', getcwd() . '/' . $fileName);
+            throw new Exception($message);
         }
 
         $parenthesisPos = strpos($headlineElement->nodeValue, '(');
@@ -71,17 +72,18 @@ class BookingMainParser extends LaundretteParser
         } elseif ($element->firstChild->tagName == 'tbody') {
             $list = $element->firstChild->childNodes;
         } else {
-            throw new Exception('Unknown child element in num_bookings.');
+            $fileName = $this->saveHtml($html);
+            $message = sprintf('Unknown child element in num_bookings. See %s', getcwd() . '/' . $fileName);
+            throw new Exception($message);
         }
 
-        $reservations = [];
         $column = 0;
 
         foreach ($list as $tr) {
             $row = [];
 
             foreach ($tr->childNodes as $td) {
-                if (get_class($td) != 'DOMElement') {
+                if (!$td instanceof DOMElement) {
                     continue;
                 }
 
@@ -98,7 +100,6 @@ class BookingMainParser extends LaundretteParser
                         $row['start_time'] = $td->nodeValue;
                         break;
 
-                    // TODO Remove BOOKING_END_TIME since it is not being used.
                     case self::BOOKING_END_TIME:
                         $row['end_time'] = $td->nodeValue;
                         break;
@@ -118,20 +119,17 @@ class BookingMainParser extends LaundretteParser
 
             // Translate Danish month abbreviations. All other abbreviations are the
             // same as in English.
-            $row['date'] = str_replace("Maj", "May", $row['date']);
-            $row['date'] = str_replace("Okt", "Oct", $row['date']);
+            $row['date'] = str_replace(['Maj', 'Okt'], ['May', 'Oct'], $row['date']);
             // Remove week day (i.e. everything before the first space).
             $row['date'] = preg_replace('/^[^ ]* \s*/', '', $row['date']);
 
             $dateString = $row['date'] . ' ' . $row['start_time'];
-            $starttime = DateTime::createFromFormat('j M H:i', $dateString);
+            $startTime = DateTime::createFromFormat('j M H:i', $dateString);
 
             $machine = new Machine($row['machine']);
 
-            $reservations[] = new Reservation($starttime, $machine);
+            $data['reservations'][] = new Reservation($startTime, $machine);
         }
-
-        $data['reservations'] = $reservations;
 
         return $data;
     }

@@ -9,7 +9,13 @@ use Laundrette\Parser\MachineGroupStatParser;
 
 class Laundrette
 {
+    const PATH_BOOKING = 'Booking/BookingMain.aspx';
 
+    const PATH_BALANCE = 'ELS_DEB/LoadBalance.aspx';
+
+    const PATH_MACHINE_STATE = 'Machine/MachineGroupStat.aspx';
+
+    /** @var \Laundrette\Adapter\AdapterInterface */
     private $adapter;
 
     public function __construct(AdapterInterface $adapter)
@@ -19,8 +25,7 @@ class Laundrette
 
     public function getReservations()
     {
-        $path = 'Booking/BookingMain.aspx';
-        $html = $this->adapter->call($path);
+        $html = $this->adapter->call(self::PATH_BOOKING);
 
         $parser = new BookingMainParser();
         $data = $parser->parse($html);
@@ -48,8 +53,7 @@ class Laundrette
 
     public function getBalanceAndTransactions()
     {
-        $path = 'ELS_DEB/LoadBalance.aspx';
-        $html = $this->adapter->call($path);
+        $html = $this->adapter->call(self::PATH_BALANCE);
 
         $parser = new LoadBalanceParser();
         $data = $parser->parse($html);
@@ -59,17 +63,11 @@ class Laundrette
 
     public function getMachineStates()
     {
-        $path = 'Machine/MachineGroupStat.aspx';
-        $html = $this->adapter->call($path);
+        $html = $this->adapter->call(self::PATH_MACHINE_STATE);
 
         $parser = new MachineGroupStatParser();
         $data = $parser->parse($html);
 
         return $data;
-    }
-
-    public function close()
-    {
-        $this->adapter->close();
     }
 }

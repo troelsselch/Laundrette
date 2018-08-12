@@ -2,9 +2,11 @@
 
 namespace Laundrette\Parser;
 
-use \DateTime;
-use \Laundrette\Entity\Machine;
-use \Laundrette\Entity\Transaction;
+use DateTime;
+use DOMElement;
+use Exception;
+use Laundrette\Entity\Machine;
+use Laundrette\Entity\Transaction;
 
 class LoadBalanceParser extends LaundretteParser
 {
@@ -21,34 +23,48 @@ class LoadBalanceParser extends LaundretteParser
     {
         $dom = $this->loadDOM($html);
 
+        $data = [
+            'balance' => '',
+            'transactions' => [],
+        ];
+
         // Get balance.
         $element = $dom->getElementById(self::PREFIX . 'lbCurrentBalance');
-        // TODO: error handling.
-        $balanceRaw = $element->nodeValue;
-        $balanceRaw = explode(':', $balanceRaw);
-        $balance = trim($balanceRaw[1]);
+
+        if (!$element instanceof DOMElement) {
+            $fileName = $this->saveHtml($html);
+            $message = sprintf('Current balance not found in file %s', getcwd() . '/' . $fileName);
+            throw new Exception($message);
+        }
+
+        $balanceRaw = explode(':', $element->nodeValue);
+        $data['balance'] = trim($balanceRaw[1]);
 
         // Get transactions.
         // Contains a simple table.
         $element = $dom->getElementById(self::PREFIX . 'pnLoadBalance');
+        if (!$element instanceof DOMElement) {
+            $fileName = $this->saveHtml($html);
+            $message = sprintf('Load balance not found in file %s', getcwd() . '/' . $fileName);
+            throw new Exception($message);
+        }
 
         $table = null;
         // Locate the table node.
         foreach ($element->childNodes as $childNode) {
-            if (get_class($childNode) == 'DOMElement'
+            if ($childNode instanceof DOMElement
                 && $childNode->tagName == 'table') {
                 $table = $childNode;
                 break;
             }
         }
 
-        $transactions = [];
         if (isset($table)) {
             foreach ($table->childNodes as $tr) {
                 if (!empty($tr->childNodes)) {
                     $row = [];
                     foreach ($tr->childNodes as $childNode) {
-                        if (get_class($childNode) != 'DOMElement') {
+                        if (!$childNode instanceof DOMElement) {
                             continue;
                         }
                         $row[] = trim($childNode->nodeValue);
@@ -58,23 +74,19 @@ class LoadBalanceParser extends LaundretteParser
                         continue;
                     }
 
-                    $dateString = $row[self::ROW_DATE] . ' ' . $row[self::ROW_TIME];
                     $date = DateTime::createFromFormat('Y-m-d H:i:s',
-                        $dateString);
+                        $row[self::ROW_DATE] . ' ' . $row[self::ROW_TIME]);
 
                     $machine = new Machine($row[self::ROW_MACHINE]);
 
                     // String to integer, e.g. "28.46" to 2846.
                     $amount = floatval($row[self::ROW_AMOUNT]) * 100;
 
-                    $transactions[] = new Transaction($date, $machine, $amount);
+                    $data['transactions'][] = new Transaction($date, $machine, $amount);
                 }
             }
         }
 
-        return [
-            'balance' => $balance,
-            'transactions' => $transactions,
-        ];
+        return $data;
     }
 }
