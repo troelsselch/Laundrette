@@ -4,7 +4,9 @@ namespace Laundrette\Entity;
 
 class Machine
 {
+
     private $name;
+
     // Text, such as "TØR 4 Klar ca: 20:18"
     private $state;
 

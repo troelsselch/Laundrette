@@ -17,25 +17,25 @@ class BookingMainParser extends LaundretteParser
      */
     const BOOKING_DATE = 0;
 
-   /**
-    * @var int
-    *
-    * Column of the machine name in the booking result.
-    */
+    /**
+     * @var int
+     *
+     * Column of the machine name in the booking result.
+     */
     const BOOKING_MACHINE = 1;
 
-   /**
-    * @var int
-    *
-    * Column of the start time in the booking result.
-    */
+    /**
+     * @var int
+     *
+     * Column of the start time in the booking result.
+     */
     const BOOKING_START_TIME = 2;
 
-   /**
-    * @var int
-    *
-    * Column of the end time in the booking result.
-    */
+    /**
+     * @var int
+     *
+     * Column of the end time in the booking result.
+     */
     const BOOKING_END_TIME = 4;
 
 
@@ -46,10 +46,10 @@ class BookingMainParser extends LaundretteParser
         $bookingsHeadlineId = self::PREFIX . 'lbBokningarRubrik';
         $bookingsId = self::PREFIX . 'DataGridBookings';
 
-        $data = array(
-        'message' => '',
-        'reservations' => array(),
-        );
+        $data = [
+            'message' => '',
+            'reservations' => [],
+        ];
 
         // lbBokningarRubrik = "Du har ikke bestilt noget." og
         // DataGridBookings = empty table
@@ -71,7 +71,7 @@ class BookingMainParser extends LaundretteParser
             $data['message'] = substr(
                 $headlineElement->nodeValue,
                 0,
-                $parenthesisPos-1
+                $parenthesisPos - 1
             );
         } else {
             $data['message'] = $headlineElement->nodeValue;
@@ -91,11 +91,11 @@ class BookingMainParser extends LaundretteParser
             throw new Exception('Unknown child element in num_bookings.');
         }
 
-        $reservations = array();
+        $reservations = [];
         $column = 0;
 
         foreach ($list as $tr) {
-            $row = array();
+            $row = [];
 
             foreach ($tr->childNodes as $td) {
                 if (get_class($td) != 'DOMElement') {
@@ -115,7 +115,7 @@ class BookingMainParser extends LaundretteParser
                         $row['start_time'] = $td->nodeValue;
                         break;
 
-                  // TODO Remove BOOKING_END_TIME since it is not being used.
+                    // TODO Remove BOOKING_END_TIME since it is not being used.
                     case self::BOOKING_END_TIME:
                         $row['end_time'] = $td->nodeValue;
                         break;
@@ -128,16 +128,16 @@ class BookingMainParser extends LaundretteParser
                 $column++;
             }
 
-          // TODO When calculating the start date we only have month and date.
-          // We know that the date will always be in the future and never more than
-          // 30 (31) days into the future, so if month is january (maybe february)
-          // and current month is november/december then year will be next year.
+            // TODO When calculating the start date we only have month and date.
+            // We know that the date will always be in the future and never more than
+            // 30 (31) days into the future, so if month is january (maybe february)
+            // and current month is november/december then year will be next year.
 
-          // Translate Danish month abbreviations. All other abbreviations are the
-          // same as in English.
+            // Translate Danish month abbreviations. All other abbreviations are the
+            // same as in English.
             $row['date'] = str_replace("Maj", "May", $row['date']);
             $row['date'] = str_replace("Okt", "Oct", $row['date']);
-          // Remove week day (i.e. everything before the first space).
+            // Remove week day (i.e. everything before the first space).
             $row['date'] = preg_replace('/^[^ ]* \s*/', '', $row['date']);
 
             $dateString = $row['date'] . ' ' . $row['start_time'];

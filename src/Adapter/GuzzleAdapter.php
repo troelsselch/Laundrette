@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 
 class GuzzleAdapter implements AdapterInterface
 {
+
     private $guzzle;
 
     private $baseUrl;

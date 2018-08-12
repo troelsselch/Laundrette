@@ -6,8 +6,11 @@ use \DateTime;
 
 class Transaction
 {
+
     private $datetime;
+
     private $machine;
+
     // Amount in 'ører'. (Never use double to represent money)
     private $amount;
 

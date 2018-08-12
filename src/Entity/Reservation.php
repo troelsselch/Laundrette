@@ -6,8 +6,10 @@ use \DateTime;
 
 class Reservation
 {
+
     // Start time. End time will be 2 hours later.
     private $datetime;
+
     private $machine;
 
     public function __construct(DateTime $datetime, Machine $machine)

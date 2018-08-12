@@ -4,8 +4,11 @@ namespace Laundrette\Entity;
 
 class MachineState
 {
+
     private $machine;
+
     private $bookedByMe;
+
     private $available;
 
     public function __construct(
@@ -13,7 +16,7 @@ class MachineState
         bool $bookedByMe,
         bool $available
     ) {
-    
+
         $this->machine = $machine;
         $this->bookedByMe = $bookedByMe;
         $this->available = $available;

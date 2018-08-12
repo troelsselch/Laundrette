@@ -12,15 +12,15 @@ class MachineGroupStatParser extends LaundretteParser
     {
         $dom = $this->loadDOM($html);
 
-        $machineData = array();
+        $machineData = [];
 
-        $machineIds = array(
-        self::PREFIX . 'Repeater1__ctl0_Repeater2__ctl0',
-        self::PREFIX . 'Repeater1__ctl0_Repeater2__ctl1',
-        self::PREFIX . 'Repeater1__ctl0_Repeater2__ctl2',
-        self::PREFIX . 'Repeater1__ctl2_Repeater2__ctl0',
-        self::PREFIX . 'Repeater1__ctl2_Repeater2__ctl1',
-        );
+        $machineIds = [
+            self::PREFIX . 'Repeater1__ctl0_Repeater2__ctl0',
+            self::PREFIX . 'Repeater1__ctl0_Repeater2__ctl1',
+            self::PREFIX . 'Repeater1__ctl0_Repeater2__ctl2',
+            self::PREFIX . 'Repeater1__ctl2_Repeater2__ctl0',
+            self::PREFIX . 'Repeater1__ctl2_Repeater2__ctl1',
+        ];
 
         foreach ($machineIds as $id) {
             $nameElement = $dom->getElementById($id . '_MaskGrpTitle');
@@ -29,7 +29,7 @@ class MachineGroupStatParser extends LaundretteParser
             );
             $bookedbymeElement = $dom->getElementById($id . '_BookedByMe');
 
-          // TODO: new error handling.
+            // TODO: new error handling.
             if (is_null($bookedbymeElement) || is_null($nameElement)) {
                 $fileHash = md5($html);
                 $fileName = $fileHash . "_machinegroupstat.html";
@@ -42,17 +42,18 @@ class MachineGroupStatParser extends LaundretteParser
             $name = $nameElement->nodeValue;
             $state = $stateElement->nodeValue;
 
-          // BookedByMe is an input field, so it needs extra processing.
+            // BookedByMe is an input field, so it needs extra processing.
             $bookedbymeValue = $bookedbymeElement->getAttribute('value');
             $bookedByMe = (strtolower($bookedbymeValue) == 'true');
 
-          // Check if the machine is currently available.
-            $match = array();
+            // Check if the machine is currently available.
+            $match = [];
             preg_match('/Ledig/', $name, $match);
             $available = !empty($match);
 
             $machine = new Machine($name, $state);
-            $machineData[] = new MachineState($machine, $bookedByMe, $available);
+            $machineData[] = new MachineState($machine, $bookedByMe,
+                $available);
         }
 
         return $machineData;

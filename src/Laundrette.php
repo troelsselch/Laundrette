@@ -9,6 +9,7 @@ use Laundrette\Parser\MachineGroupStatParser;
 
 class Laundrette
 {
+
     private $adapter;
 
     public function __construct(AdapterInterface $adapter)
