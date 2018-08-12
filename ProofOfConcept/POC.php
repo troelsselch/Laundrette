@@ -1,37 +1,15 @@
 <?php
 
-require 'vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use Laundrette\Laundrette;
-use Laundrette\Adapter\DummyAdapter;
 use Laundrette\Adapter\CurlAdapter;
+use Laundrette\Adapter\GuzzleAdapter;
 
 if (count($argv) < 2) {
-    print "Missing arguments";
+    print "Missing arguments\n";
+    exit();
 }
-$username = $argv[1];
-$password = $argv[2];
-$basePath = 'http://vask.vasketur.dk/030/';
-$adapter = new CurlAdapter($basePath, $username, $password);
-print PHP_EOL . "Using CurlAdapter" . PHP_EOL;
-
-$api = new Laundrette($adapter);
-
-$data = $api->getTransactions();
-print "=== Transactions ===" . PHP_EOL;
-output($data);
-
-$data = $api->getBalance();
-print "=== Balance ===" . PHP_EOL;
-output($data);
-
-$data = $api->getReservations();
-print "=== Reservations ===" . PHP_EOL;
-output($data);
-
-$data = $api->getMachineStates();
-print "=== MachineStates ===" . PHP_EOL;
-output($data);
 
 function output($data)
 {
@@ -51,4 +29,33 @@ function output($data)
     print PHP_EOL;
 }
 
-$api->close();
+try {
+    $username = $argv[1];
+    $password = $argv[2];
+    $basePath = 'http://vask.vasketur.dk/030/';
+    //$adapter = new CurlAdapter($basePath, $username, $password);
+    $adapter = new GuzzleAdapter($basePath, $username, $password);
+    print PHP_EOL . "Using CurlAdapter" . PHP_EOL;
+
+    $api = new Laundrette($adapter);
+
+    $data = $api->getTransactions();
+    print "=== Transactions ===" . PHP_EOL;
+    output($data);
+
+    $data = $api->getBalance();
+    print "=== Balance ===" . PHP_EOL;
+    output($data);
+
+    $data = $api->getReservations();
+    print "=== Reservations ===" . PHP_EOL;
+    output($data);
+
+    $data = $api->getMachineStates();
+    print "=== MachineStates ===" . PHP_EOL;
+    output($data);
+
+    $api->close();
+} catch (Exception $e) {
+    printf("Exception: %s", $e->getMessage());
+}

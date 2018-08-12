@@ -12,5 +12,8 @@
   "require-dev": {
     "phpunit/phpunit": "^7",
     "codacy/coverage": "dev-master"
+  },
+  "require": {
+    "guzzlehttp/guzzle": "^6.3"
   }
 }
