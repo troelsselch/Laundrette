@@ -10,34 +10,17 @@ use \Laundrette\Entity\Reservation;
 class BookingMainParser extends LaundretteParser
 {
 
-    /**
-     * @var int
-     *
-     * Column of the date in the booking result.
-     */
+    /** @var int Column of the date in the booking result. */
     const BOOKING_DATE = 0;
 
-    /**
-     * @var int
-     *
-     * Column of the machine name in the booking result.
-     */
+    /** @var int Column of the machine name in the booking result. */
     const BOOKING_MACHINE = 1;
 
-    /**
-     * @var int
-     *
-     * Column of the start time in the booking result.
-     */
+    /** @var int Column of the start time in the booking result. */
     const BOOKING_START_TIME = 2;
 
-    /**
-     * @var int
-     *
-     * Column of the end time in the booking result.
-     */
+    /** @var int Column of the end time in the booking result. */
     const BOOKING_END_TIME = 4;
-
 
     public function parse($html)
     {
