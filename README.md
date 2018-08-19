@@ -14,12 +14,10 @@ mobile friendly.
 
 ## TODO
 
-- Find and fix TODOs.
-- Logger (should this be included in the api?)
-- Class and method documentation.
 - Show available time slots.
 - "Make reservations" functionality.
-- Run tests twith vendor/bin/phpunit. Create code coverage with vendor/bin/phpunit --coverage-html coverage
+- Class and method documentation.
+- Frontend implementation.
 
 ## Limitations
 
@@ -42,25 +40,28 @@ Example code:
     }
     else {
       $url = "http://vask.vasketur.dk/030/";
-      $adapter = new CurlAdapter($url, $username, $password);
+      $adapter = new GuzzleAdapter($url, $username, $password);
       $api = new Laundrette($adapter);
       $data = $api->getTransactions();
     }
 
 ## Testing
 
-To run the test in `test/SimpleApiTest.php` you must log into vasketur.dk
-and save the pages to your local machine. You should save the following
+You can run the test as follows:
 
-- Min side as `Booking/BookingMain.aspx`.
-- Status as `ELS_DEB/LoadBalance.aspx`.
-- Saldo as `Machine/MachineGroupStat.aspx`.
+Simply fun PHPUnit tests:
 
-Then you can run the test as follows:
+    vendor/bin/phpunit
 
-    php test/SimpleApiTest.php
+Create code coverage report:
 
-This will output the data for the api calls.
+    vendor/bin/phpunit --coverage-html coverage
+    
+Public coverage to Codacy:
+
+    vendor/bin/phpunit --coverage-cover build/index.xml
+    vendor/bin/codacycoverage clover build/index.xml
+
 
 ## Security
 
@@ -69,7 +70,7 @@ However it is up to you to also avoid storing the username and password when
 using the API. By storing I mean on disk or in a database. You can of course
 store them in a `$_SESSION`.
 
-Also not that the `CurlAdapter` will create a cookiejar file holding a session
+Note that the `CurlAdapter` will create a cookiejar file holding a session
 token which also allows access to the site. This will be stored in the current
 working directory and will be called `cookiejar_[md5 hash].txt`.
 
