@@ -25,39 +25,9 @@ class BookingMainParser extends LaundretteParser
 
     public function parse()
     {
-        $bookingsHeadlineId = self::PREFIX . 'lbBokningarRubrik';
         $bookingsId = self::PREFIX . 'DataGridBookings';
 
-        $data = [
-            'message' => '',
-            'reservations' => [],
-        ];
-
-        /**
-         * Example data.
-         * lbBokningarRubrik = "Du har ikke bestilt noget." og
-         * DataGridBookings = empty table
-         *
-         * lbBokningarRubrik = "Dine nuværende bestillinger ( 2 )" og
-         * DataGridBookings = 2 <tr>s
-         */
-        $headlineElement = $this->dom->getElementById($bookingsHeadlineId);
-        if (is_null($headlineElement)) {
-            $fileName = $this->saveHtml();
-            $message = sprintf('Could not parse dom for file %s', getcwd() . '/' . $fileName);
-            throw new Exception($message);
-        }
-
-        $parenthesisPos = strpos($headlineElement->nodeValue, '(');
-        if ($parenthesisPos !== false) {
-            $data['message'] = substr(
-                $headlineElement->nodeValue,
-                0,
-                $parenthesisPos - 1
-            );
-        } else {
-            $data['message'] = $headlineElement->nodeValue;
-        }
+        $data = [];
 
         $element = $this->dom->getElementById($bookingsId);
 
@@ -126,7 +96,7 @@ class BookingMainParser extends LaundretteParser
 
             $machine = Machine::createFromString($row['machine']);
 
-            $data['reservations'][] = new Reservation($startTime, $machine);
+            $data[] = new Reservation($startTime, $machine);
         }
 
         return $data;
