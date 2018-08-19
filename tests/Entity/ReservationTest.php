@@ -16,7 +16,10 @@ class ReservationTest extends TestCase
         $dt = DateTime::createFromFormat('Y-m-d', '2018-06-06');
         $reservation = new Reservation($dt, $machine);
         $this->assertEquals(
-            sprintf('Laundrette\Entity\Reservation: (%s), Laundrette\Entity\Machine: Example', $dt->format('Y-m-d H:i:s')),
+            sprintf(
+                'Laundrette\Entity\Reservation: (%s), Laundrette\Entity\Machine: Example',
+                $dt->format('Y-m-d H:i:s')
+            ),
             (string)$reservation
         );
     }

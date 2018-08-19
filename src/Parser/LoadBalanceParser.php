@@ -77,8 +77,10 @@ class LoadBalanceParser extends LaundretteParser
                         continue;
                     }
 
-                    $date = DateTime::createFromFormat('Y-m-d H:i:s',
-                        $row[self::ROW_DATE] . ' ' . $row[self::ROW_TIME]);
+                    $date = DateTime::createFromFormat(
+                        'Y-m-d H:i:s',
+                        $row[self::ROW_DATE] . ' ' . $row[self::ROW_TIME]
+                    );
 
                     $machine = Machine::createFromString($row[self::ROW_MACHINE]);
 

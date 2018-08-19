@@ -23,5 +23,4 @@ class MachineStateTest extends TestCase
         $state = new MachineState($machine, false, true, $stringState);
         $this->assertEquals('Laundrette\Entity\MachineState: (Laundrette\Entity\Machine: Example), Booked by me=No, Available=Yes ( (Ledig))', (string)$state);
     }
-
 }

@@ -60,8 +60,6 @@ class CurlAdapter implements AdapterInterface
         $postData['_ctl0:ContentPlaceHolder1:tbUsername'] = $username;
         $postData['_ctl0:ContentPlaceHolder1:tbPassword'] = $password;
 
-        // TODO check if "min side" is in html so we know if login succeded.
-        // TODO error handling
         // Perform login post request.
         $this->call($path, $postData);
     }
@@ -72,11 +70,12 @@ class CurlAdapter implements AdapterInterface
 
         if ($data) {
             curl_setopt($this->curl, CURLOPT_POST, true);
-            curl_setopt($this->curl, CURLOPT_POSTFIELDS,
-                http_build_query($data));
+            curl_setopt(
+                $this->curl, CURLOPT_POSTFIELDS,
+                http_build_query($data)
+            );
         }
 
-        // TODO error handling
         if (curl_error($this->curl)) {
             throw new Exception(curl_error($this->curl));
         }

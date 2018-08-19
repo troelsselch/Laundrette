@@ -35,14 +35,19 @@ class BookingMainParser extends LaundretteParser
             return $data;
         }
 
-        if ($element->firstChild->tagName == 'tr') {
-            $list = $element->childNodes;
-        } elseif ($element->firstChild->tagName == 'tbody') {
-            $list = $element->firstChild->childNodes;
-        } else {
-            $fileName = $this->saveHtml();
-            $message = sprintf('Unknown child element in num_bookings. See %s', getcwd() . '/' . $fileName);
-            throw new Exception($message);
+        switch ($element->firstChild->tagName) {
+            case 'tr':
+                $list = $element->childNodes;
+                break;
+
+            case 'tbody':
+                $list = $element->firstChild->childNodes;
+                break;
+
+            default:
+                $fileName = $this->saveHtml();
+                $message = sprintf('Unknown child element in num_bookings. See %s', getcwd() . '/' . $fileName);
+                throw new Exception($message);
         }
 
         $column = 0;

@@ -36,9 +36,9 @@ class CurrentMachineStateParser extends LaundretteParser
         return $data;
     }
 
-    private function getMachineName($id) : string
+    private function getMachineName($machineId) : string
     {
-        $nameElement = $this->dom->getElementById($id . '_MaskGrpTitle');
+        $nameElement = $this->dom->getElementById($machineId . '_MaskGrpTitle');
 
         if (is_null($nameElement)) {
             $fileName = $this->saveHtml();
@@ -49,10 +49,10 @@ class CurrentMachineStateParser extends LaundretteParser
         return $nameElement->nodeValue;
     }
 
-    private function getMachineState($id) : string
+    private function getMachineState($machineId) : string
     {
         $stateElement = $this->dom->getElementById(
-            $id . '_Repeater3__ctl1_LabelStatus'
+            $machineId . '_Repeater3__ctl1_LabelStatus'
         );
 
         /**
@@ -72,9 +72,9 @@ class CurrentMachineStateParser extends LaundretteParser
         return !empty($match);
     }
 
-    private function getBookedByMe($id) : bool
+    private function getBookedByMe($machineId) : bool
     {
-        $bookedbymeElement = $this->dom->getElementById($id . '_BookedByMe');
+        $bookedbymeElement = $this->dom->getElementById($machineId . '_BookedByMe');
 
         if (is_null($bookedbymeElement)) {
             $fileName = $this->saveHtml();

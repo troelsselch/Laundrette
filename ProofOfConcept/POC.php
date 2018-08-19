@@ -49,6 +49,9 @@ try {
 
     $data = $api->getReservations();
     print "=== Reservations ===" . PHP_EOL;
+    if (empty($data)) {
+        print "No reservations.\n";
+    }
     output($data);
 
     $data = $api->getMachineStates();
