@@ -17,8 +17,8 @@ class TransactionTest extends TestCase
         $transaction = new Transaction($dt, $machine, 42);
         $this->assertEquals(
             sprintf(
-                'Laundrette\Entity\Transaction: %s, (Laundrette\Entity\Machine: Example), 42',
-                $dt->format('Y-m-d H:i:s')
+                'Transaction: %s, (Machine: Example), 42',
+                $dt->format('Y-m-d H:i')
             ),
             (string)$transaction
         );

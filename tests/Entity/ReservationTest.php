@@ -17,8 +17,8 @@ class ReservationTest extends TestCase
         $reservation = new Reservation($dt, $machine);
         $this->assertEquals(
             sprintf(
-                'Laundrette\Entity\Reservation: (%s), Laundrette\Entity\Machine: Example',
-                $dt->format('Y-m-d H:i:s')
+                'Reservation on %s for Machine: Example',
+                $dt->format('Y-m-d H:i')
             ),
             (string)$reservation
         );

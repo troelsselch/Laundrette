@@ -13,7 +13,6 @@ class BookingMainParserTest extends TestCase
         $parser = new BookingMainParser($fixture);
         $data = $parser->parse();
 
-        $this->assertEquals("Dine nuværende bestillinger", $data['message']);
-        $this->assertEquals(2, count($data['reservations']));
+        $this->assertEquals(2, count($data));
     }
 }

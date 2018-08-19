@@ -11,7 +11,7 @@ class MachineTest extends TestCase
     public function testCanCreateAndToString(): void
     {
         $machine = new Machine('Example');
-        $this->assertEquals('Laundrette\Entity\Machine: Example', (string)$machine);
+        $this->assertEquals('Machine: Example', (string)$machine);
     }
 
     public function testCanCreateFromString()
