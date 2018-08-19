@@ -23,10 +23,8 @@ class BookingMainParser extends LaundretteParser
     /** @var int Column of the end time in the booking result. */
     const BOOKING_END_TIME = 4;
 
-    public function parse($html)
+    public function parse()
     {
-        $dom = $this->loadDOM($html);
-
         $bookingsHeadlineId = self::PREFIX . 'lbBokningarRubrik';
         $bookingsId = self::PREFIX . 'DataGridBookings';
 
@@ -43,9 +41,9 @@ class BookingMainParser extends LaundretteParser
          * lbBokningarRubrik = "Dine nuværende bestillinger ( 2 )" og
          * DataGridBookings = 2 <tr>s
          */
-        $headlineElement = $dom->getElementById($bookingsHeadlineId);
+        $headlineElement = $this->dom->getElementById($bookingsHeadlineId);
         if (is_null($headlineElement)) {
-            $fileName = $this->saveHtml($html);
+            $fileName = $this->saveHtml();
             $message = sprintf('Could not parse dom for file %s', getcwd() . '/' . $fileName);
             throw new Exception($message);
         }
@@ -61,7 +59,7 @@ class BookingMainParser extends LaundretteParser
             $data['message'] = $headlineElement->nodeValue;
         }
 
-        $element = $dom->getElementById($bookingsId);
+        $element = $this->dom->getElementById($bookingsId);
 
         if (empty($element->nodeValue)) {
             return $data;
@@ -72,7 +70,7 @@ class BookingMainParser extends LaundretteParser
         } elseif ($element->firstChild->tagName == 'tbody') {
             $list = $element->firstChild->childNodes;
         } else {
-            $fileName = $this->saveHtml($html);
+            $fileName = $this->saveHtml();
             $message = sprintf('Unknown child element in num_bookings. See %s', getcwd() . '/' . $fileName);
             throw new Exception($message);
         }
@@ -126,7 +124,7 @@ class BookingMainParser extends LaundretteParser
             $dateString = $row['date'] . ' ' . $row['start_time'];
             $startTime = DateTime::createFromFormat('j M H:i', $dateString);
 
-            $machine = new Machine($row['machine']);
+            $machine = Machine::createFromString($row['machine']);
 
             $data['reservations'][] = new Reservation($startTime, $machine);
         }

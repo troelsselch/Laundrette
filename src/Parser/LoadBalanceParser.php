@@ -19,32 +19,30 @@ class LoadBalanceParser extends LaundretteParser
 
     const ROW_AMOUNT = 3;
 
-    public function parse($html)
+    public function parse()
     {
-        $dom = $this->loadDOM($html);
-
         $data = [
-            'balance' => '',
+            'balance' => 0.0,
             'transactions' => [],
         ];
 
         // Get balance.
-        $element = $dom->getElementById(self::PREFIX . 'lbCurrentBalance');
+        $element = $this->dom->getElementById(self::PREFIX . 'lbCurrentBalance');
 
         if (!$element instanceof DOMElement) {
-            $fileName = $this->saveHtml($html);
+            $fileName = $this->saveHtml();
             $message = sprintf('Current balance not found in file %s', getcwd() . '/' . $fileName);
             throw new Exception($message);
         }
 
         $balanceRaw = explode(':', $element->nodeValue);
-        $data['balance'] = trim($balanceRaw[1]);
+        $data['balance'] = (double) trim($balanceRaw[1]);
 
         // Get transactions.
         // Contains a simple table.
-        $element = $dom->getElementById(self::PREFIX . 'pnLoadBalance');
+        $element = $this->dom->getElementById(self::PREFIX . 'pnLoadBalance');
         if (!$element instanceof DOMElement) {
-            $fileName = $this->saveHtml($html);
+            $fileName = $this->saveHtml();
             $message = sprintf('Load balance not found in file %s', getcwd() . '/' . $fileName);
             throw new Exception($message);
         }
@@ -77,10 +75,10 @@ class LoadBalanceParser extends LaundretteParser
                     $date = DateTime::createFromFormat('Y-m-d H:i:s',
                         $row[self::ROW_DATE] . ' ' . $row[self::ROW_TIME]);
 
-                    $machine = new Machine($row[self::ROW_MACHINE]);
+                    $machine = Machine::createFromString($row[self::ROW_MACHINE]);
 
                     // String to integer, e.g. "28.46" to 2846.
-                    $amount = floatval($row[self::ROW_AMOUNT]) * 100;
+                    $amount = doubleval($row[self::ROW_AMOUNT]) * 100;
 
                     $data['transactions'][] = new Transaction($date, $machine, $amount);
                 }

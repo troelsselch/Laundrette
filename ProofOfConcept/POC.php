@@ -54,8 +54,6 @@ try {
     $data = $api->getMachineStates();
     print "=== MachineStates ===" . PHP_EOL;
     output($data);
-
-    $api->close();
 } catch (Exception $e) {
     printf("Exception: %s", $e->getMessage());
 }

@@ -11,21 +11,30 @@ class MachineState
 
     private $available;
 
+    private $stateString;
+
     public function __construct(
         Machine $machine,
         bool $bookedByMe,
-        bool $available
+        bool $available,
+        string $stateString = ''
     ) {
 
         $this->machine = $machine;
         $this->bookedByMe = $bookedByMe;
         $this->available = $available;
+        $this->stateString = $stateString;
     }
 
     public function __toString()
     {
+        $format = '%s: (%s), Booked by me=%s, Available=%s';
+        if (!empty($this->stateString)) {
+            $format .= sprintf(' (%s)', $this->stateString);
+        }
+
         return sprintf(
-            '%s: %s, Booked by me=%s, Available=%s',
+            $format,
             get_class(),
             $this->machine,
             $this->bookedByMe ? 'Yes' : 'No',

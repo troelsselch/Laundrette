@@ -21,7 +21,7 @@ class Reservation
     public function __toString()
     {
         return sprintf(
-            '%s: %s, %s',
+            '%s: (%s), %s',
             get_class(),
             $this->datetime->format('Y-m-d H:i:s'),
             $this->machine

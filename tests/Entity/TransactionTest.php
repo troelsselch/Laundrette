@@ -12,11 +12,11 @@ class TransactionTest extends TestCase
 
     public function testCanCreateAndToString(): void
     {
-        $machine = new Machine('Example', 'State');
+        $machine = new Machine('Example');
         $dt = DateTime::createFromFormat('Y-m-d', '2018-06-06');
         $transaction = new Transaction($dt, $machine, 42);
         $this->assertEquals(
-            sprintf('Laundrette\Entity\Transaction: %s, Laundrette\Entity\Machine: Example, State, 42', $dt->format('Y-m-d H:i:s')),
+            sprintf('Laundrette\Entity\Transaction: %s, (Laundrette\Entity\Machine: Example), 42', $dt->format('Y-m-d H:i:s')),
             (string)$transaction
         );
     }
