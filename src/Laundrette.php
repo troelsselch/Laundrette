@@ -23,7 +23,7 @@ class Laundrette
         $this->adapter = $adapter;
     }
 
-    public function getReservations()
+    public function getReservations() : array
     {
         $html = $this->adapter->call(self::PATH_BOOKING);
 
@@ -33,14 +33,14 @@ class Laundrette
         return $data;
     }
 
-    public function getBalance()
+    public function getBalance() : float
     {
         $data = $this->getBalanceAndTransactions();
 
         return $data['balance'];
     }
 
-    public function getTransactions()
+    public function getTransactions() : array
     {
         $data = $this->getBalanceAndTransactions();
 
@@ -49,7 +49,7 @@ class Laundrette
         return $transactions;
     }
 
-    public function getBalanceAndTransactions()
+    public function getBalanceAndTransactions() : array
     {
         $html = $this->adapter->call(self::PATH_BALANCE);
 
@@ -59,7 +59,7 @@ class Laundrette
         return $data;
     }
 
-    public function getMachineStates()
+    public function getMachineStates() : array
     {
         $html = $this->adapter->call(self::PATH_MACHINE_STATE);
 

@@ -12,21 +12,22 @@ class LoadBalanceParser extends LaundretteParser
 {
 
     const ROW_DATE = 0;
-
     const ROW_TIME = 1;
-
     const ROW_MACHINE = 2;
-
     const ROW_AMOUNT = 3;
 
     public function parse()
     {
-        $data = [
-            'balance' => 0.0,
-            'transactions' => [],
-        ];
+        $data = [];
 
-        // Get balance.
+        $data['balance'] = $this->getBalance();
+        $data['transactions'] = $this->getTransactions();
+
+        return $data;
+    }
+
+    private function getBalance() : float
+    {
         $element = $this->dom->getElementById(self::PREFIX . 'lbCurrentBalance');
 
         if (!$element instanceof DOMElement) {
@@ -36,9 +37,13 @@ class LoadBalanceParser extends LaundretteParser
         }
 
         $balanceRaw = explode(':', $element->nodeValue);
-        $data['balance'] = (double) trim($balanceRaw[1]);
+        return (float) trim($balanceRaw[1]);
+    }
 
-        // Get transactions.
+    private function getTransactions() : array
+    {
+        $transactions = [];
+
         // Contains a simple table.
         $element = $this->dom->getElementById(self::PREFIX . 'pnLoadBalance');
         if (!$element instanceof DOMElement) {
@@ -78,13 +83,13 @@ class LoadBalanceParser extends LaundretteParser
                     $machine = Machine::createFromString($row[self::ROW_MACHINE]);
 
                     // String to integer, e.g. "28.46" to 2846.
-                    $amount = doubleval($row[self::ROW_AMOUNT]) * 100;
+                    $amount = floatval($row[self::ROW_AMOUNT]) * 100;
 
-                    $data['transactions'][] = new Transaction($date, $machine, $amount);
+                    $transactions[] = new Transaction($date, $machine, $amount);
                 }
             }
         }
 
-        return $data;
+        return $transactions;
     }
 }
