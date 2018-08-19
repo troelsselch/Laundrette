@@ -1,5 +1,23 @@
 {
   "autoload": {
-    "psr-4": {"Laundrette\\": "src/"}
+    "psr-4": {
+      "Laundrette\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Laundrette\\Test\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7",
+    "codacy/coverage": "dev-master",
+    "mockery/mockery": "dev-master"
+  },
+  "require": {
+    "guzzlehttp/guzzle": "^6.3",
+    "ext-curl": "*",
+    "ext-mbstring": "*",
+    "ext-xml": "*"
   }
 }

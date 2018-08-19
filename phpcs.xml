@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="PSR2">
+    <description>PSR-2 ruleset -namespace</description>
+    <rule ref="PSR2">
+    </rule>
+</ruleset>

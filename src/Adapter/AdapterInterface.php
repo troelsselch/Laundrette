@@ -2,9 +2,8 @@
 
 namespace Laundrette\Adapter;
 
-interface AdapterInterface {
+interface AdapterInterface
+{
 
-  public function call($path, $data);
-
-  public function close();
+    public function call($path, $data = null);
 }

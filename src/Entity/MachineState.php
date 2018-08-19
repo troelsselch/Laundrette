@@ -2,23 +2,42 @@
 
 namespace Laundrette\Entity;
 
-class MachineState {
-  private $machine;
-  private $booked_by_me;
-  private $available;
+class MachineState
+{
 
-  public function __construct(Machine $machine, bool $booked_by_me, bool $available) {
-    $this->machine = $machine;
-    $this->booked_by_me = $booked_by_me;
-    $this->available = $available;
-  }
+    private $machine;
 
-  public function __toString() {
-    return sprintf('%s: %s, Booked by me=%s, Available=%s',
-      get_class(),
-      $this->machine,
-      $this->booked_by_me ? 'Yes' : 'No',
-      $this->available ? 'Yes' : 'No'
-    );
-  }
+    private $bookedByMe;
+
+    private $available;
+
+    private $stateString;
+
+    public function __construct(
+        Machine $machine,
+        bool $bookedByMe,
+        bool $available,
+        string $stateString = ''
+    ) {
+
+        $this->machine = $machine;
+        $this->bookedByMe = $bookedByMe;
+        $this->available = $available;
+        $this->stateString = $stateString;
+    }
+
+    public function __toString()
+    {
+        $format = 'MachineState: %s, Booked by me=%s, Available=%s';
+        if (!empty($this->stateString)) {
+            $format .= sprintf(' (%s)', $this->stateString);
+        }
+
+        return sprintf(
+            $format,
+            $this->machine,
+            $this->bookedByMe ? 'Yes' : 'No',
+            $this->available ? 'Yes' : 'No'
+        );
+    }
 }

@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>
+	ELS Boka Direkt
+</title><meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <script src="DefaultLogin_files/jquery-1.js" type="text/javascript"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta content="R-CARD M5 Webbokning för ELS (ELS Boka Direkt)" name="description"><link href="DefaultLogin_files/styles.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var messagediv = $('div[id$="PanelMessage"]');
+            messagediv.hide();
+
+            var message = $('span[id$="MessageText"]');
+
+            var msgImg = $('img[id$="MessageImg"]');
+            
+            if (message.text().length > 0) {
+                var msgType = $('input[id$="MessageType"]');
+                if (msgType.val() == 'ERROR') {
+                    msgImg.attr('src', '//' + 'grafik/error.png');
+                } else {
+                    msgImg.attr('src', '//' + 'grafik/Ok32.png');
+                }
+                messagediv.show('fast');  
+            }
+            
+        });
+    </script>
+    
+    <script src="DefaultLogin_files/jquery-1.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var txtPwdp;
+        $(document).ready(function () {
+            var txtPwd = $('#_ctl0_ContentPlaceHolder1_tbPassword');
+            txtPwd.keydown(function (event) {
+
+                if (event.which == 13 && $(txtPwd).val().length > 0) {
+                    __doPostBack('_ctl0:ContentPlaceHolder1:btOK', '');
+                }
+            });
+            $('#_ctl0_ContentPlaceHolder1_tbUsername').focus();
+        });
+    </script>
+    
+    
+
+</head>
+<body>
+    <form name="aspnetForm" method="post" action="Default.aspx" id="aspnetForm">
+<input name="__EVENTTARGET" id="__EVENTTARGET" value="" type="hidden">
+<input name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" type="hidden">
+<input name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUJLTY3OTUyMjQ4D2QWAmYPZBYCAgMPZBYGAgEPDxYCHgdWaXNpYmxlaGQWAmYPFQEHTG9nIGlu" type="hidden">
+
+<script type="text/javascript">
+<!--
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+// -->
+</script>
+
+
+<input name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="EF7E10" type="hidden">
+<input name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEWBgKKmN/lAwKYhs/kAgKjkuQsAvbzwL0OAriY0qc4=" type="hidden">
+      <div style="border: 1px solid #808080; min-height: 470px; width: 772px; margin-left: auto; -moz-border-radius: 5px; border-radius: 5px;
+        margin-right: auto">
+        <table style="background-color: #fff" width="680" cellspacing="6" cellpadding="0" border="0" align="center">
+            <tbody><tr>
+                <td>
+                    <img src="DefaultLogin_files/logo.jpg">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div align="right">
+                        <span id="_ctl0_lbTid" class="ELS_M"></span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                
+                <td>
+                    
+                    <div class="buttons" style="float:left">
+                      
+                    </div>
+                     <div class="buttons" style="text-align: right; margin-bottom:10px">
+                       
+                     </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="_ctl0_PanelMessage" class="panel" style="display: none;">
+	
+                        <div style="margin-top: 1px;float:left; margin-right: 5px; margin-left: 5px">
+                            <img id="_ctl0_MessageImg" src="DefaultLogin_files/error.png" style="height:20px;width:20px;" border="0">    
+                        </div>
+                        <div style="margin-top: 5px">
+                            <span id="_ctl0_MessageText"></span>    
+                        </div>
+                        
+                        <input name="_ctl0:MessageType" id="_ctl0_MessageType" value="ERROR" type="hidden">
+                    
+</div>    
+                </td>
+             </tr>
+
+            <tr>
+                <td>
+                    
+    <div class="panel">
+        
+        <div id="_ctl0_ContentPlaceHolder1_infostatus" style="min-height: 247px">
+            <div>
+                <div>
+                    <table style="width: 100%">
+                        <tbody><tr style="text-align: center">
+                            <td colspan="3">
+                                
+                                <span id="_ctl0_ContentPlaceHolder1_lbLoginRubrik" class="ELS_L">Velkommen til Web booking hos Electrolux og VD-Solutions<br> Det anbefales at registrere mail adresse under instillinger <br> Mailen bruges til påmindelser og glemt kodeord</span>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            
+                            <td>
+                                <table style="margin-left: auto;margin-right: auto">
+                                    <tbody><tr>
+                                        <td>
+                                            
+                                        <span id="_ctl0_ContentPlaceHolder1_lbLoginUsernameRubrik" class="ELS_M">Navn:</span><br>
+                                        <input name="_ctl0:ContentPlaceHolder1:tbUsername" size="12" id="_ctl0_ContentPlaceHolder1_tbUsername" tabindex="1" class="LoginTextbox" type="text">        
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                             
+                                            <span id="_ctl0_ContentPlaceHolder1_lbLoginPasswordRubrik" class="ELS_M">Adgangskode:</span><br>
+                                            <input name="_ctl0:ContentPlaceHolder1:tbPassword" size="13" id="_ctl0_ContentPlaceHolder1_tbPassword" tabindex="2" class="LoginTextbox" type="password">                
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                              
+                                            <input name="_ctl0:ContentPlaceHolder1:btOK" value="Log ind" onclick="javascript:__doPostBack('_ctl0$ContentPlaceHolder1$btOK','')" language="javascript" id="_ctl0_ContentPlaceHolder1_btOK" tabindex="3" class="ELS_M" type="button"><br>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            
+                                            <a id="_ctl0_ContentPlaceHolder1_LinkButtonRecoverPassword" href="javascript:__doPostBack('_ctl0$ContentPlaceHolder1$LinkButtonRecoverPassword','')">Glemt kode</a>    
+                                            
+                                        </td>
+                                    </tr>
+                                </tbody></table>
+                                    
+                            </td>
+                            
+                        </tr>
+                    </tbody></table>
+                        
+                </div>
+                 
+            </div>
+        </div>
+    </div>
+
+                </td>
+            </tr>
+        </tbody></table>
+    </div>
+    <div align="center">
+        <span id="_ctl0_lbCopyright" style="font-family:Arial;"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <span id="_ctl0_lbVersion" style="font-family:Arial;">Version 1.2.0.2 Copyright Electrolux Laundry System Sweden AB</span>
+    </div>
+    </form>
+
+
+</body></html>

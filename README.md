@@ -1,3 +1,7 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f9b8e782735f42b98896fab67c19edd3)](https://www.codacy.com/project/troelsselch/Laundrette/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=troelsselch/Laundrette&amp;utm_campaign=Badge_Grade_Dashboard)
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/f9b8e782735f42b98896fab67c19edd3)](https://www.codacy.com/app/troelsselch/Laundrette?utm_source=github.com&utm_medium=referral&utm_content=troelsselch/Laundrette&utm_campaign=Badge_Coverage)
+
 # Laundrette
 
 A PHP interface for getting information from vasketur.dk in parseable data
@@ -10,11 +14,10 @@ mobile friendly.
 
 ## TODO
 
-- Find and fix TODOs.
-- Logger (should this be included in the api?)
-- Class and method documentation.
 - Show available time slots.
 - "Make reservations" functionality.
+- Class and method documentation.
+- Frontend implementation.
 
 ## Limitations
 
@@ -24,7 +27,7 @@ You cannot (yet) make any reservations using this API.
 
 Find your laundrette url. This will be unique for each laundrette. You need to
 be aware of both the subdomain (before `vasketur.dk`) and the id (after
-`vasktur.dk`), e.g. for http://**vask**.vasketur.dk/**030**.
+`vasketur.dk`), e.g. for http://**vask**.vasketur.dk/**030**.
 
 Create autoloader using composer. Run
 
@@ -37,25 +40,28 @@ Example code:
     }
     else {
       $url = "http://vask.vasketur.dk/030/";
-      $adapter = new CurlAdapter($url, $username, $password);
+      $adapter = new GuzzleAdapter($url, $username, $password);
       $api = new Laundrette($adapter);
       $data = $api->getTransactions();
     }
 
 ## Testing
 
-To run the test in `test/SimpleApiTest.php` you must log into vasketur.dk
-and save the pages to your local machine. You should save the following
+You can run the test as follows:
 
-- Min side as `Booking/BookingMain.aspx`.
-- Status as `ELS_DEB/LoadBalance.aspx`.
-- Saldo as `Machine/MachineGroupStat.aspx`.
+Simply fun PHPUnit tests:
 
-Then you can run the test as follows:
+    vendor/bin/phpunit
 
-    php test/SimpleApiTest.php
+Create code coverage report:
 
-This will output the data for the api calls.
+    vendor/bin/phpunit --coverage-html coverage
+    
+Public coverage to Codacy:
+
+    vendor/bin/phpunit --coverage-cover build/index.xml
+    vendor/bin/codacycoverage clover build/index.xml
+
 
 ## Security
 
@@ -64,7 +70,7 @@ However it is up to you to also avoid storing the username and password when
 using the API. By storing I mean on disk or in a database. You can of course
 store them in a `$_SESSION`.
 
-Also not that the `CurlAdapter` will create a cookiejar file holding a session
+Note that the `CurlAdapter` will create a cookiejar file holding a session
 token which also allows access to the site. This will be stored in the current
 working directory and will be called `cookiejar_[md5 hash].txt`.
 
@@ -76,4 +82,4 @@ not wasted.
 
 ## License
 
-Laundrette is released under the MIT License. See [LICENSE](https://github.com/troelsselch/Laundrette/blob/develop/LICENSE) file for details.
+Laundrette is released under the MIT License. See [LICENSE](https://github.com/troelsselch/Laundrette/blob/master/LICENSE) file for details.

@@ -2,21 +2,35 @@
 
 namespace Laundrette\Entity;
 
-class Machine {
-  private $name;
-  // Text, such as "TØR 4 Klar ca: 20:18"
-  private $state;
+class Machine
+{
+    const REGEX = '([A-ZÆØÅ]+ [1-5])';
 
-  public function __construct($name, $state = '') {
-    $this->name = $name;
-    $this->state = $state;
-  }
+    private $name;
 
-  public function __toString() {
-    return sprintf('%s: %s, %s',
-      get_class(),
-      $this->name,
-      $this->state
-    );
-  }
+    public function __construct($name)
+    {
+        $this->name = $name;
+    }
+
+    public function getName() : string
+    {
+        return $this->name;
+    }
+
+    public static function createFromString(string $string) : ?Machine
+    {
+        $matches = [];
+        preg_match(self::REGEX, $string, $matches);
+
+        return !empty($matches) ? new Machine($matches[0]) : null;
+    }
+
+    public function __toString()
+    {
+        return sprintf(
+            'Machine: %s',
+            $this->name
+        );
+    }
 }

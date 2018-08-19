@@ -5,62 +5,67 @@ namespace Laundrette;
 use Laundrette\Adapter\AdapterInterface;
 use Laundrette\Parser\BookingMainParser;
 use Laundrette\Parser\LoadBalanceParser;
-use Laundrette\Parser\MachineGroupStatParser;
+use Laundrette\Parser\CurrentMachineStateParser;
 
-class Laundrette {
-  private $adapter;
+class Laundrette
+{
+    const PATH_BOOKING = 'Booking/BookingMain.aspx';
 
-  public function __construct(AdapterInterface $adapter) {
-    $this->adapter = $adapter;
-  }
+    const PATH_BALANCE = 'ELS_DEB/LoadBalance.aspx';
 
-  public function getReservations() {
-    $path = 'Booking/BookingMain.aspx';
-    $html = $this->adapter->call($path);
+    const PATH_MACHINE_STATE = 'Machine/MachineGroupStat.aspx';
 
-    $parser = new BookingMainParser();
-    $data = $parser->parse($html);
+    /** @var \Laundrette\Adapter\AdapterInterface */
+    private $adapter;
 
-    return $data;
-  }
+    public function __construct(AdapterInterface $adapter)
+    {
+        $this->adapter = $adapter;
+    }
 
-  public function getBalance() {
-    $data = $this->getBalanceAndTransactions();
+    public function getReservations() : array
+    {
+        $html = $this->adapter->call(self::PATH_BOOKING);
 
-    $balance = $data['balance'];
+        $parser = new BookingMainParser($html);
+        $data = $parser->parse();
 
-    return $balance;
-  }
+        return $data;
+    }
 
-  public function getTransactions() {
-    $data = $this->getBalanceAndTransactions();
+    public function getBalance() : float
+    {
+        $data = $this->getBalanceAndTransactions();
 
-    $transactions = $data['transactions'];
+        return $data['balance'];
+    }
 
-    return $transactions;
-  }
+    public function getTransactions() : array
+    {
+        $data = $this->getBalanceAndTransactions();
 
-  public function getBalanceAndTransactions() {
-    $path = 'ELS_DEB/LoadBalance.aspx';
-    $html = $this->adapter->call($path);
+        $transactions = $data['transactions'];
 
-    $parser = new LoadBalanceParser();
-    $data = $parser->parse($html);
+        return $transactions;
+    }
 
-    return $data;
-  }
+    public function getBalanceAndTransactions() : array
+    {
+        $html = $this->adapter->call(self::PATH_BALANCE);
 
-  public function getMachineStates() {
-    $path = 'Machine/MachineGroupStat.aspx';
-    $html = $this->adapter->call($path);
+        $parser = new LoadBalanceParser($html);
+        $data = $parser->parse();
 
-    $parser = new MachineGroupStatParser();
-    $data = $parser->parse($html);
+        return $data;
+    }
 
-    return $data;
-  }
+    public function getMachineStates() : array
+    {
+        $html = $this->adapter->call(self::PATH_MACHINE_STATE);
 
-  public function close() {
-    $this->adapter->close();
-  }
+        $parser = new CurrentMachineStateParser($html);
+        $data = $parser->parse();
+
+        return $data;
+    }
 }
