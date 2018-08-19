@@ -23,23 +23,13 @@ class CurrentMachineStateParser extends LaundretteParser
         $data = [];
 
         foreach ($this->machineIds as $id) {
-
-
             $name = $this->getMachineName($id);
 
-            $available = $this->getAvailability($name);
-
-            $state = $this->getMachineState($id);
-
-            $bookedByMe = $this->getBookedByMe($id);
-
-            $machine = Machine::createFromString($name);
-
             $data[] = new MachineState(
-                $machine,
-                $bookedByMe,
-                $available,
-                $state
+                Machine::createFromString($name),
+                $this->getBookedByMe($id),
+                $this->getAvailability($name),
+                $this->getMachineState($id)
             );
         }
 
@@ -65,6 +55,11 @@ class CurrentMachineStateParser extends LaundretteParser
             $id . '_Repeater3__ctl1_LabelStatus'
         );
 
+        /**
+         * Can be:
+         * - "VASK 1 Afsluttedes 18:23"
+         * - "VASK 3 Klar ca: 19:57"
+         */
         return $stateElement->nodeValue;
     }
 

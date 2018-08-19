@@ -28,14 +28,13 @@ class MachineState
 
     public function __toString()
     {
-        $format = '%s: (%s), Booked by me=%s, Available=%s';
+        $format = 'MachineState: %s, Booked by me=%s, Available=%s';
         if (!empty($this->stateString)) {
             $format .= sprintf(' (%s)', $this->stateString);
         }
 
         return sprintf(
             $format,
-            get_class(),
             $this->machine,
             $this->bookedByMe ? 'Yes' : 'No',
             $this->available ? 'Yes' : 'No'

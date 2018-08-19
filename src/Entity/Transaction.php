@@ -29,9 +29,8 @@ class Transaction
     public function __toString()
     {
         return sprintf(
-            '%s: %s, (%s), %s',
-            get_class(),
-            $this->datetime->format('Y-m-d H:i:s'),
+            'Transaction: %s, (%s), %s',
+            $this->datetime->format('Y-m-d H:i'),
             $this->machine,
             $this->amount
         );
