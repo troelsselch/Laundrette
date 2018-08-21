@@ -4,16 +4,16 @@ namespace Laundrette;
 
 use Laundrette\Adapter\AdapterInterface;
 use Laundrette\Parser\BookingMainParser;
+use Laundrette\Parser\BookingCalendarParser;
 use Laundrette\Parser\LoadBalanceParser;
 use Laundrette\Parser\CurrentMachineStateParser;
 
 class Laundrette
 {
     const PATH_BOOKING = 'Booking/BookingMain.aspx';
-
     const PATH_BALANCE = 'ELS_DEB/LoadBalance.aspx';
-
     const PATH_MACHINE_STATE = 'Machine/MachineGroupStat.aspx';
+    const PATH_BOOKING_CALENDAR = 'Booking/BookingCalendar.aspx';
 
     /** @var \Laundrette\Adapter\AdapterInterface */
     private $adapter;
@@ -64,6 +64,16 @@ class Laundrette
         $html = $this->adapter->call(self::PATH_MACHINE_STATE);
 
         $parser = new CurrentMachineStateParser($html);
+        $data = $parser->parse();
+
+        return $data;
+    }
+
+    public function getBookingCalendar() : array
+    {
+        $html = $this->adapter->call(self::PATH_BOOKING_CALENDAR);
+
+        $parser = new BookingCalendarParser($html);
         $data = $parser->parse();
 
         return $data;
