@@ -3,6 +3,7 @@
 use Laundrette\Test\TestCase;
 use Laundrette\Laundrette;
 use Laundrette\Adapter\AdapterInterface;
+use Laundrette\Entity\TimeSlot;
 
 class LaundretteFeatureTest extends TestCase
 {
@@ -119,6 +120,54 @@ class LaundretteFeatureTest extends TestCase
         $api = new Laundrette($adapter);
 
         $data = $api->getBookingCalendar();
-        var_dump($data);
+        print "\n";
+        /** @var TimeSlot $item */
+        foreach ($data as $item) {
+            print $item->getTimeslot() . ' ' . $item->getDatetime() . ' ' . ($item->isAvailable() ? 'A' : 'NA') . PHP_EOL;
+        }
+    }
+
+    public function testCanBookingCalendarChangeMonth() : void
+    {
+        $fixture = file_get_contents(__DIR__ . '/../Fixtures/Booking/BookingCalendar2.aspx');
+        $adapter = Mockery::mock(AdapterInterface::class);
+        $method = $adapter->shouldReceive('call');
+        $method->andReturn(utf8_decode($fixture));
+
+        $api = new Laundrette($adapter);
+
+        $data = $api->getBookingCalendar();
+        print "\n";
+        /** @var TimeSlot $item */
+        foreach ($data as $item) {
+            printf("%s %s %s\n",
+                $item->getTimeslot(),
+                $item->getDatetime()->format('Y-m-d'),
+                ($item->isAvailable() ? 'A' : 'NA')
+            );
+        }
+        // TODO Asserts.
+    }
+
+    public function testCanBookingCalendarChangeYear() : void
+    {
+        $fixture = file_get_contents(__DIR__ . '/../Fixtures/Booking/BookingCalendar3.aspx');
+        $adapter = Mockery::mock(AdapterInterface::class);
+        $method = $adapter->shouldReceive('call');
+        $method->andReturn(utf8_decode($fixture));
+
+        $api = new Laundrette($adapter);
+
+        $data = $api->getBookingCalendar();
+        print "\n";
+        /** @var TimeSlot $item */
+        foreach ($data as $item) {
+            printf("%s %s %s\n",
+                $item->getTimeslot(),
+                $item->getDatetime()->format('Y-m-d'),
+                ($item->isAvailable() ? 'A' : 'NA')
+            );
+        }
+        // TODO Asserts.
     }
 }
