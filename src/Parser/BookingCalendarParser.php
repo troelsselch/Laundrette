@@ -1,28 +1,48 @@
 <?php
 
-
 namespace Laundrette\Parser;
 
+use DateInterval;
+use DateTime;
+use Laundrette\Entity\TimeSlot;
 
 class BookingCalendarParser extends LaundretteParser
 {
     public function parse()
     {
-        $monthName = $this->getMonthName();
+        $year = date('Y');
+        $month = $this->getMonthName();
+        $yearMonth = $year . ' ' . $month;
 
         $dates = $this->getDates();
-var_dump($dates);
+
+        $data = [];
         for ($dayCol = 0; $dayCol <= 6; $dayCol++) {
             for ($timeRow = 1; $timeRow <= 7; $timeRow++) {
-                $cellId = self::PREFIX . $dayCol . ',' . $timeRow . ',1,';
+                $timeSlot = new TimeSlot();
 
+                $timeSlot->setTimeslot($timeRow);
+
+                if ($dayCol > 0 && $dates[$dayCol] < $dates[$dayCol-1]) {
+                    /** @var TimeSlot $previous */
+                    $previous = end($data);
+                    $yearMonth = $previous->getDatetime()->add(new DateInterval('P1D'))->format('Y M');
+                }
+
+                $timeStr = $yearMonth . ' ' . $dates[$dayCol];
+
+                $timeSlot->setDatetime(DateTime::createFromFormat('Y M d', $timeStr));
+
+                $cellId = self::PREFIX . $dayCol . ',' . $timeRow . ',1,';
+                $cellData = $this->dom->getElementById($cellId);
+                $available = empty($cellData->getAttribute('disabled'));
+                $timeSlot->setAvailable($available);
+
+                $data[] = $timeSlot;
             }
         }
-        $data = [];
 
-        $times = [];
-
-        return [];
+        return $data;
     }
 
     private function getMonthName() : string
@@ -38,10 +58,8 @@ var_dump($dates);
             $dayId = self::PREFIX . 'lbCalendarDag' . $dayNum;
             $day = $this->dom->getElementById($dayId)->nodeValue;
             $matches = [];
-            var_dump($day);
-            preg_match('/[A-Z][a-zæøå][a-zæøå]([0-9]+)/', $day, $matches);
-            var_dump($matches);
-            $dates[] = $matches[1];
+            preg_match('/[A-Za-zæøå]+([0-9]+)/', $day, $matches);
+            $dates[] = (int) $matches[1];
         }
 
         return $dates;
