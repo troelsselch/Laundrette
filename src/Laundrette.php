@@ -6,13 +6,13 @@ use Laundrette\Adapter\AdapterInterface;
 use Laundrette\Parser\BookingMainParser;
 use Laundrette\Parser\LoadBalanceParser;
 use Laundrette\Parser\CurrentMachineStateParser;
+use Laundrette\Parser\VersionParser;
 
 class Laundrette
 {
+    const PATH_DEFAULT = 'Default.aspx';
     const PATH_BOOKING = 'Booking/BookingMain.aspx';
-
     const PATH_BALANCE = 'ELS_DEB/LoadBalance.aspx';
-
     const PATH_MACHINE_STATE = 'Machine/MachineGroupStat.aspx';
 
     /** @var \Laundrette\Adapter\AdapterInterface */
@@ -67,5 +67,15 @@ class Laundrette
         $data = $parser->parse();
 
         return $data;
+    }
+
+    public function getVersion() : string
+    {
+        $html = $this->adapter->call(self::PATH_DEFAULT);
+
+        $parser = new VersionParser($html);
+        $version = $parser->parse();
+
+        return $version;
     }
 }

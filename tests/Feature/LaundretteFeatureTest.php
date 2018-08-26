@@ -85,7 +85,6 @@ class LaundretteFeatureTest extends TestCase
         $api = new Laundrette($adapter);
 
         $data = $api->getMachineStates();
-        var_dump((string)$data[3]);
 
         $this->assertCount(5, $data);
         $this->assertEquals(
@@ -108,5 +107,19 @@ class LaundretteFeatureTest extends TestCase
             'MachineState: Machine: TØR 5, Booked by me=No, Available=Yes (TØR 5 Afsluttedes 17:41)',
             $data[4]
         );
+    }
+
+    public function testCanGetVersion() : void
+    {
+        $fixture = file_get_contents(__DIR__ . '/../Fixtures/DefaultLogin.html');
+        $adapter = Mockery::mock(AdapterInterface::class);
+        $method = $adapter->shouldReceive('call');
+        $method->andReturn($fixture);
+
+        $api = new Laundrette($adapter);
+
+        $data = $api->getVersion();
+
+        $this->assertEquals('1.2.0.2', $data);
     }
 }
