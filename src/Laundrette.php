@@ -4,16 +4,17 @@ namespace Laundrette;
 
 use Laundrette\Adapter\AdapterInterface;
 use Laundrette\Parser\BookingMainParser;
-use Laundrette\Parser\LoadBalanceParser;
+use Laundrette\Parser\BookingCalendarParser;
+use Laundrette\Parser\LoadBalanceBalanceParser;
 use Laundrette\Parser\CurrentMachineStateParser;
+use Laundrette\Parser\LoadBalanceTransactionsParser;
 
 class Laundrette
 {
     const PATH_BOOKING = 'Booking/BookingMain.aspx';
-
     const PATH_BALANCE = 'ELS_DEB/LoadBalance.aspx';
-
     const PATH_MACHINE_STATE = 'Machine/MachineGroupStat.aspx';
+    const PATH_BOOKING_CALENDAR = 'Booking/BookingCalendar.aspx';
 
     /** @var \Laundrette\Adapter\AdapterInterface */
     private $adapter;
@@ -35,25 +36,19 @@ class Laundrette
 
     public function getBalance() : float
     {
-        $data = $this->getBalanceAndTransactions();
+        $html = $this->adapter->call(self::PATH_BALANCE);
 
-        return $data['balance'];
+        $parser = new LoadBalanceBalanceParser($html);
+        $data = $parser->parse();
+
+        return $data;
     }
 
     public function getTransactions() : array
     {
-        $data = $this->getBalanceAndTransactions();
-
-        $transactions = $data['transactions'];
-
-        return $transactions;
-    }
-
-    public function getBalanceAndTransactions() : array
-    {
         $html = $this->adapter->call(self::PATH_BALANCE);
 
-        $parser = new LoadBalanceParser($html);
+        $parser = new LoadBalanceTransactionsParser($html);
         $data = $parser->parse();
 
         return $data;
@@ -64,6 +59,16 @@ class Laundrette
         $html = $this->adapter->call(self::PATH_MACHINE_STATE);
 
         $parser = new CurrentMachineStateParser($html);
+        $data = $parser->parse();
+
+        return $data;
+    }
+
+    public function getBookingCalendar() : array
+    {
+        $html = $this->adapter->call(self::PATH_BOOKING_CALENDAR);
+
+        $parser = new BookingCalendarParser($html);
         $data = $parser->parse();
 
         return $data;
