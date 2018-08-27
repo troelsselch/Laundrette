@@ -4,6 +4,7 @@ namespace Laundrette\Parser;
 
 use DateTime;
 use DOMElement;
+use DOMNodeList;
 use Exception;
 use Laundrette\Entity\Machine;
 use Laundrette\Entity\Transaction;
@@ -45,34 +46,43 @@ class LoadBalanceTransactionsParser extends LaundretteParser
 
         if (isset($table)) {
             foreach ($table->childNodes as $tr) {
-                if (!empty($tr->childNodes)) {
-                    $row = [];
-                    foreach ($tr->childNodes as $childNode) {
-                        if (!$childNode instanceof DOMElement) {
-                            continue;
-                        }
-                        $row[] = trim($childNode->nodeValue);
-                    }
-                    // Do not include header.
-                    if (strtolower($row[0]) == 'dato') {
-                        continue;
-                    }
-
-                    $date = DateTime::createFromFormat(
-                        'Y-m-d H:i:s',
-                        $row[self::ROW_DATE] . ' ' . $row[self::ROW_TIME]
-                    );
-
-                    $machine = Machine::createFromString($row[self::ROW_MACHINE]);
-
-                    // String to integer, e.g. "28.46" to 2846.
-                    $amount = floatval($row[self::ROW_AMOUNT]) * 100;
-
-                    $transactions[] = new Transaction($date, $machine, $amount);
+                $transaction = $this->processRow($tr);
+                if ($transaction) {
+                    $transactions[] = $transaction;
                 }
+
             }
         }
 
         return $transactions;
+    }
+
+    private function processRow(DOMElement $tr) : ?Transaction
+    {
+        if (!empty($tr->childNodes)) {
+            $row = [];
+            foreach ($tr->childNodes as $childNode) {
+                if (!$childNode instanceof DOMElement) {
+                    continue;
+                }
+                $row[] = trim($childNode->nodeValue);
+            }
+            // Do not include header.
+            if (strtolower($row[0]) == 'dato') {
+                return null;
+            }
+
+            $date = DateTime::createFromFormat(
+                'Y-m-d H:i:s',
+                $row[self::ROW_DATE] . ' ' . $row[self::ROW_TIME]
+            );
+
+            $machine = Machine::createFromString($row[self::ROW_MACHINE]);
+
+            // String to integer, e.g. "28.46" to 2846.
+            $amount = floatval($row[self::ROW_AMOUNT]) * 100;
+
+            return new Transaction($date, $machine, $amount);
+        }
     }
 }

@@ -21,6 +21,9 @@ class MachineStateTest extends TestCase
         $machine = new Machine('Example');
         $stringState = ' (Ledig)';
         $state = new MachineState($machine, false, true, $stringState);
-        $this->assertEquals('MachineState: Machine: Example, Booked by me=No, Available=Yes ( (Ledig))', (string)$state);
+        $this->assertEquals(
+            'MachineState: Machine: Example, Booked by me=No, Available=Yes ( (Ledig))',
+            (string)$state
+        );
     }
 }

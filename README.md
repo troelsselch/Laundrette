@@ -14,10 +14,10 @@ mobile friendly.
 
 ## TODO
 
-- Show available time slots.
+- Job/Service to pull transaction data to local storage.
+- Frontend implementation.
 - "Make reservations" functionality.
 - Class and method documentation.
-- Frontend implementation.
 
 ## Limitations
 
