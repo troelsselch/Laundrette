@@ -8,7 +8,7 @@ use Exception;
 use Laundrette\Entity\Machine;
 use Laundrette\Entity\Transaction;
 
-class LoadBalanceParser extends LaundretteParser
+class LoadBalanceTransactionsParser extends LaundretteParser
 {
 
     const ROW_DATE = 0;
@@ -18,26 +18,7 @@ class LoadBalanceParser extends LaundretteParser
 
     public function parse()
     {
-        $data = [];
-
-        $data['balance'] = $this->getBalance();
-        $data['transactions'] = $this->getTransactions();
-
-        return $data;
-    }
-
-    private function getBalance() : float
-    {
-        $element = $this->dom->getElementById(self::PREFIX . 'lbCurrentBalance');
-
-        if (!$element instanceof DOMElement) {
-            $fileName = $this->saveHtml();
-            $message = sprintf('Current balance not found in file %s', getcwd() . '/' . $fileName);
-            throw new Exception($message);
-        }
-
-        $balanceRaw = explode(':', $element->nodeValue);
-        return (float) trim($balanceRaw[1]);
+        return $this->getTransactions();
     }
 
     private function getTransactions() : array

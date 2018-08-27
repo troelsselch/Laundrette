@@ -5,8 +5,9 @@ namespace Laundrette;
 use Laundrette\Adapter\AdapterInterface;
 use Laundrette\Parser\BookingMainParser;
 use Laundrette\Parser\BookingCalendarParser;
-use Laundrette\Parser\LoadBalanceParser;
+use Laundrette\Parser\LoadBalanceBalanceParser;
 use Laundrette\Parser\CurrentMachineStateParser;
+use Laundrette\Parser\LoadBalanceTransactionsParser;
 
 class Laundrette
 {
@@ -35,25 +36,19 @@ class Laundrette
 
     public function getBalance() : float
     {
-        $data = $this->getBalanceAndTransactions();
+        $html = $this->adapter->call(self::PATH_BALANCE);
 
-        return $data['balance'];
+        $parser = new LoadBalanceBalanceParser($html);
+        $data = $parser->parse();
+
+        return $data;
     }
 
     public function getTransactions() : array
     {
-        $data = $this->getBalanceAndTransactions();
-
-        $transactions = $data['transactions'];
-
-        return $transactions;
-    }
-
-    public function getBalanceAndTransactions() : array
-    {
         $html = $this->adapter->call(self::PATH_BALANCE);
 
-        $parser = new LoadBalanceParser($html);
+        $parser = new LoadBalanceTransactionsParser($html);
         $data = $parser->parse();
 
         return $data;
