@@ -14,43 +14,37 @@ class TimeSlot
     const SEVENTEEN_NINETEEN = 6;
     const NINETEEN_TWENTYONE = 7;
 
-    /** @var DateTime */
-    protected $datetime;
+    /** @var string */
+    protected $timeString;
     /** @var int */
-    protected $timeslot;
+    protected $timeSlot;
     /** @var bool */
     protected $available;
 
-    /**
-     * @return DateTime
-     */
-    public function getDatetime(): DateTime
+    public function getTimeString(): string
     {
-        return $this->datetime;
+        return $this->timeString;
     }
 
-    /**
-     * @param DateTime $datetime
-     */
-    public function setDatetime(DateTime $datetime) : void
+    public function setTimeString(DateTime $datetime) : void
     {
-        $this->datetime = $datetime;
+        $this->timeString = $datetime->format('Y-m-d');
     }
 
     /**
      * @return int
      */
-    public function getTimeslot(): int
+    public function getTimeSlot(): int
     {
-        return $this->timeslot;
+        return $this->timeSlot;
     }
 
     /**
-     * @param int $timeslot
+     * @param int $timeSlot
      */
-    public function setTimeslot(int $timeslot) : void
+    public function setTimeSlot(int $timeSlot) : void
     {
-        $this->timeslot = $timeslot;
+        $this->timeSlot = $timeSlot;
     }
 
     /**

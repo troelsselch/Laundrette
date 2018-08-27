@@ -23,15 +23,17 @@ class BookingCalendarParser extends LaundretteParser
 
                 $timeSlot->setTimeslot($timeRow);
 
+                // If date changes, we also change month.
                 if ($dayCol > 0 && $dates[$dayCol] < $dates[$dayCol-1]) {
                     /** @var TimeSlot $previous */
                     $previous = end($data);
-                    $yearMonth = $previous->getDatetime()->add(new DateInterval('P1D'))->format('Y M');
+                    $dateTime = DateTime::createFromFormat('Y-m-d', $previous->getTimeString());
+                    $yearMonth = $dateTime->add(new DateInterval('P1D'))->format('Y M');
                 }
 
                 $timeStr = $yearMonth . ' ' . $dates[$dayCol];
 
-                $timeSlot->setDatetime(DateTime::createFromFormat('Y M d', $timeStr));
+                $timeSlot->setTimeString(DateTime::createFromFormat('Y M d', $timeStr));
 
                 $cellId = self::PREFIX . $dayCol . ',' . $timeRow . ',1,';
                 $cellData = $this->dom->getElementById($cellId);
