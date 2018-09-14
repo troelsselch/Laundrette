@@ -71,7 +71,8 @@ class CurlAdapter implements AdapterInterface
         if ($data) {
             curl_setopt($this->curl, CURLOPT_POST, true);
             curl_setopt(
-                $this->curl, CURLOPT_POSTFIELDS,
+                $this->curl,
+                CURLOPT_POSTFIELDS,
                 http_build_query($data)
             );
         }

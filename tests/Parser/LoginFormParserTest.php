@@ -15,7 +15,10 @@ class LoginFormParserTest extends TestCase
 
         $this->assertEquals('_ctl0$ContentPlaceHolder1$btOK', $data['__EVENTTARGET']);
         $this->assertEquals('EF7E10', $data['__VIEWSTATEGENERATOR']);
-        $this->assertEquals('/wEPDwUJLTY3OTUyMjQ4D2QWAmYPZBYCAgMPZBYGAgEPDxYCHgdWaXNpYmxlaGQWAmYPFQEHTG9nIGlu', $data['__VIEWSTATE']);
+        $this->assertEquals(
+            '/wEPDwUJLTY3OTUyMjQ4D2QWAmYPZBYCAgMPZBYGAgEPDxYCHgdWaXNpYmxlaGQWAmYPFQEHTG9nIGlu',
+            $data['__VIEWSTATE']
+        );
         $this->assertEquals('/wEWBgKKmN/lAwKYhs/kAgKjkuQsAvbzwL0OAriY0qc4=', $data['__EVENTVALIDATION']);
     }
 }
