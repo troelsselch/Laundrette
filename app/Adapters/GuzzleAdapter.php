@@ -2,8 +2,8 @@
 
 namespace App\Adapters;
 
-use Laundrette\Laundrette;
-use Laundrette\Parser\LoginFormParser;
+use App\Http\Controllers\LaundretteController;
+use App\Parsers\LoginFormParser;
 use GuzzleHttp\Client;
 
 class GuzzleAdapter implements AdapterInterface
@@ -31,7 +31,7 @@ class GuzzleAdapter implements AdapterInterface
     private function login($username, $password)
     {
         // Get login form.
-        $response = $this->guzzle->get(Laundrette::PATH_DEFAULT);
+        $response = $this->guzzle->get(LaundretteController::PATH_DEFAULT);
         $html = $response->getBody();
 
         // If the text 'Min side' is on the page, then we are already logged in.
@@ -47,7 +47,7 @@ class GuzzleAdapter implements AdapterInterface
         $postData['_ctl0:ContentPlaceHolder1:tbPassword'] = $password;
 
         // Perform login post request.
-        $this->call(Laundrette::PATH_DEFAULT, $postData);
+        $this->call(LaundretteController::PATH_DEFAULT, $postData);
     }
 
     public function call($path, $data = null)

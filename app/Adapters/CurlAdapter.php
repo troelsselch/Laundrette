@@ -3,7 +3,7 @@
 namespace App\Adapters;
 
 use Exception;
-use Laundrette\Parser\LoginFormParser;
+use App\Parsers\LoginFormParser;
 
 class CurlAdapter implements AdapterInterface
 {
@@ -54,8 +54,8 @@ class CurlAdapter implements AdapterInterface
         }
 
         // Parse login form tokens to be used in post request.
-        $parser = new LoginFormParser();
-        $postData = $parser->parse($html);
+        $parser = new LoginFormParser($html);
+        $postData = $parser->parse();
 
         $postData['_ctl0:ContentPlaceHolder1:tbUsername'] = $username;
         $postData['_ctl0:ContentPlaceHolder1:tbPassword'] = $password;
