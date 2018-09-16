@@ -2,10 +2,23 @@
 
 namespace Tests;
 
+use GuzzleHttp\Client;
 use Laravel\Lumen\Testing\TestCase as BaseTestCase;
+use Mockery;
 
 abstract class TestCase extends BaseTestCase
 {
+    public function setUp() : void
+    {
+        parent::setUp();
+
+        $guzzleMock = Mockery::mock(Client::class);
+
+        app()->bind(Client::class, function () use ($guzzleMock) {
+            return $guzzleMock;
+        });
+    }
+
     /**
      * Creates the application.
      *

@@ -276,7 +276,7 @@ function __doPostBack(eventTarget, eventArgument) {
 
                     <a id="_ctl0_ContentPlaceHolder1_hlPrevious" disabled="disabled" style="color:Blue;">Foregående</a>
                     <span id="_ctl0_ContentPlaceHolder1_Label2">  </span>
-                    <a id="_ctl0_ContentPlaceHolder1_hlNext" href="javascript:__doPostBack('_ctl0$ContentPlaceHolder1$hlNext','')" style="color:Blue;">Næste</a>
+                    <a id="_ctl0_ContentPlaceHolder1_hlNext" disabled="disabled" href="javascript:__doPostBack('_ctl0$ContentPlaceHolder1$hlNext','')" style="color:Blue;">Næste</a>
 
 </div>
 
