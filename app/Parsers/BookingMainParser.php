@@ -2,6 +2,7 @@
 
 namespace App\Parsers;
 
+use App\Repositories\MachineRepository;
 use Exception;
 use DateTime;
 use DOMElement;
@@ -99,7 +100,9 @@ class BookingMainParser extends LaundretteParser
             $dateString = $row['date'] . ' ' . $row['start_time'];
             $startTime = DateTime::createFromFormat('j M H:i', $dateString);
 
-            $machine = Machine::createFromString($row['machine']);
+            /** @var MachineRepository $repository */
+            $repository = app(MachineRepository::class);
+            $machine = $repository->findByString($row['machine']);
 
             $data[] = new Reservation($startTime, $machine);
         }

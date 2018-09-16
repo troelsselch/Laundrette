@@ -20,8 +20,11 @@ class MachineRepository extends EntityRepository
         }
 
         /** @var Machine $machine */
-        $machine = new Machine($matches[0]);
-        //$machine = $this->findOneBy(['name' => $matches[0]]);
+        $machine = $this->findOneBy(['name' => $matches[0]]);
+
+        if (!$machine) {
+            throw new Exception(sprintf('Unknown machine [%s]', $matches[0]));
+        }
 
         return $machine;
     }

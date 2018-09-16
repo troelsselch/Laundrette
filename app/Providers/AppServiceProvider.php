@@ -5,7 +5,9 @@ namespace App\Providers;
 use App\Adapters\AdapterInterface;
 use App\Adapters\GuzzleAdapter;
 use App\Models\Machine;
+use App\Models\Transaction;
 use App\Repositories\MachineRepository;
+use App\Repositories\TransactionRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -29,6 +31,13 @@ class AppServiceProvider extends ServiceProvider
             return new MachineRepository(
                 $app['em'],
                 $app['em']->getClassMetadata(Machine::class)
+            );
+        });
+
+        $this->app->bind(TransactionRepository::class, function ($app) {
+            return new TransactionRepository(
+                $app['em'],
+                $app['em']->getClassMetadata(Transaction::class)
             );
         });
     }

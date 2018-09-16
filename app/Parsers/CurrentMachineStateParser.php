@@ -2,6 +2,7 @@
 
 namespace App\Parsers;
 
+use App\Repositories\MachineRepository;
 use Exception;
 use App\Models\Machine;
 use App\Models\MachineState;
@@ -25,8 +26,12 @@ class CurrentMachineStateParser extends LaundretteParser
         foreach ($this->machineIds as $id) {
             $name = $this->getMachineName($id);
 
+            /** @var MachineRepository $repository */
+            $repository = app(MachineRepository::class);
+            $machine = $repository->findByString($name);
+
             $data[] = new MachineState(
-                Machine::createFromString($name),
+                $machine,
                 $this->getBookedByMe($id),
                 $this->getAvailability($name),
                 $this->getMachineState($id)

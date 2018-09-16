@@ -39,11 +39,41 @@ class Transaction
         Machine $machine,
         int $amount
     ) {
-        // Datetime and Machine must not change for a given transaction, so we
-        // clone them.
-        $this->datetime = clone $datetime;
-        $this->machine = clone $machine;
+        $this->datetime = $datetime;
+        $this->machine = $machine;
         $this->amount = $amount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getDatetime()
+    {
+        return $this->datetime;
+    }
+
+    /**
+     * @return Machine
+     */
+    public function getMachine()
+    {
+        return $this->machine;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAmount()
+    {
+        return $this->amount;
     }
 
     public function __toString()
