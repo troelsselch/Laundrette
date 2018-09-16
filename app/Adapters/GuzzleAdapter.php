@@ -10,6 +10,7 @@ use Exception;
 
 class GuzzleAdapter
 {
+
     private $guzzle;
 
     private $baseUrl;
@@ -34,9 +35,11 @@ class GuzzleAdapter
         }
         $this->baseUrl = $baseUrl;
 
-        $this->guzzle = new Client([
-            'base_uri' => $baseUrl,
-            'cookies' => true,
+        $this->guzzle = app()->makeWith(Client::class, [
+            'config' => [
+                'base_uri' => $baseUrl,
+                'cookies' => true,
+            ],
         ]);
 
         $this->login($username, $password);
@@ -58,8 +61,9 @@ class GuzzleAdapter
         $this->call(LaundretteController::PATH_DEFAULT, $postData);
     }
 
-    public function call($path, $data = null) : string
+    public function call($path, $data = null): string
     {
+        var_dump("oh no");
         $method = 'GET';
         $options = [];
         if ($data) {
@@ -76,12 +80,12 @@ class GuzzleAdapter
         return $html;
     }
 
-    public function setEventTarget(string $target) : void
+    public function setEventTarget(string $target): void
     {
         $this->state['__EVENTTARGET'] = $target;
     }
 
-    private function saveState(string $html) : void
+    private function saveState(string $html): void
     {
         $dom = new DOMDocument();
         // Silence warnings. The status page has multiple divs with the same id (imgExpand).
