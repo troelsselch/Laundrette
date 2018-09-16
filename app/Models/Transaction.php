@@ -2,16 +2,36 @@
 
 namespace App\Models;
 
-use \DateTime;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="transactions")
+ */
 class Transaction
 {
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private $id;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
     private $datetime;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Machine")
+     */
     private $machine;
 
     // Amount in 'ører'. (Never use double to represent money)
+    /**
+     * @ORM\Column(type="integer")
+     */
     private $amount;
 
     public function __construct(

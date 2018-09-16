@@ -5,6 +5,7 @@ namespace App\Adapters;
 use App\Http\Controllers\LaundretteController;
 use App\Parsers\LoginFormParser;
 use GuzzleHttp\Client;
+use Exception;
 
 class GuzzleAdapter implements AdapterInterface
 {
@@ -15,6 +16,10 @@ class GuzzleAdapter implements AdapterInterface
 
     public function __construct($baseUrl, $username, $password)
     {
+        if (empty($baseUrl) || empty($username) || empty($password)) {
+            throw new Exception('Missing url, username, and/or password configuration.');
+        }
+
         if (substr($baseUrl, -1) != '/') {
             $baseUrl .= '/';
         }

@@ -2,9 +2,10 @@
 
 namespace App\Parsers;
 
+use App\Repositories\MachineRepository;
 use DateTime;
+use Doctrine\ORM\EntityManager;
 use DOMElement;
-use DOMNodeList;
 use Exception;
 use App\Models\Machine;
 use App\Models\Transaction;
@@ -77,7 +78,9 @@ class LoadBalanceTransactionsParser extends LaundretteParser
                 $row[self::ROW_DATE] . ' ' . $row[self::ROW_TIME]
             );
 
-            $machine = Machine::createFromString($row[self::ROW_MACHINE]);
+            /** @var MachineRepository $repository */
+            $repository = app(MachineRepository::class);
+            $machine = $repository->findByString($row[self::ROW_MACHINE]);
 
             // String to integer, e.g. "28.46" to 2846.
             $amount = floatval($row[self::ROW_AMOUNT]) * 100;
