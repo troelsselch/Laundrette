@@ -3,16 +3,25 @@
 namespace App\Adapters;
 
 use App\Http\Controllers\LaundretteController;
-use App\Parsers\LoginFormParser;
+use DOMDocument;
+use DOMElement;
 use GuzzleHttp\Client;
 use Exception;
 
 class GuzzleAdapter implements AdapterInterface
 {
-
     private $guzzle;
 
     private $baseUrl;
+
+    private $state = [
+        '__EVENTARGUMENT' => '',
+        '__EVENTTARGET' => '',
+        '__EVENTVALIDATION' => '',
+        '__VIEWSTATE' => '',
+        '__VIEWSTATEGENERATOR' => '',
+        '_ctl0:MessageType' => 'ERROR',
+    ];
 
     public function __construct($baseUrl, $username, $password)
     {
@@ -35,37 +44,55 @@ class GuzzleAdapter implements AdapterInterface
 
     private function login($username, $password)
     {
-        // Get login form.
-        $response = $this->guzzle->get(LaundretteController::PATH_DEFAULT);
-        $html = $response->getBody();
+        $html = $this->call(LaundretteController::PATH_DEFAULT);
 
         // If the text 'Min side' is on the page, then we are already logged in.
         if (preg_match('/min side/i', $html)) {
             return;
         }
 
-        // Parse login form tokens to be used in post request.
-        $parser = new LoginFormParser($html);
-        $postData = $parser->parse();
-
         $postData['_ctl0:ContentPlaceHolder1:tbUsername'] = $username;
         $postData['_ctl0:ContentPlaceHolder1:tbPassword'] = $password;
+        $postData['__EVENTTARGET'] = '_ctl0$ContentPlaceHolder1$btOK';
 
-        // Perform login post request.
         $this->call(LaundretteController::PATH_DEFAULT, $postData);
     }
 
-    public function call($path, $data = null)
+    public function call($path, $data = null) : string
     {
         $method = 'GET';
         $options = [];
         if ($data) {
             $method = 'POST';
-            $options = ['form_params' => $data];
+            $options = ['form_params' => $data + $this->state];
         }
 
         $response = $this->guzzle->request($method, $path, $options);
 
-        return utf8_decode($response->getBody());
+        $html = utf8_decode($response->getBody());
+
+        $this->saveState($html);
+
+        return $html;
+    }
+
+    private function saveState(string $html) : void
+    {
+        $dom = new DOMDocument();
+        // Silence warnings. The status page has multiple divs with the same id (imgExpand).
+        @$dom->loadHTML($html);
+        $dom->preserveWhiteSpace = false;
+
+        $stateIds = [
+            '__VIEWSTATEGENERATOR',
+            '__VIEWSTATE',
+            '__EVENTVALIDATION',
+        ];
+
+        foreach ($stateIds as $stateId) {
+            /** @var DOMElement $element */
+            $element = $dom->getElementById($stateId);
+            $this->state[$stateId] = $element ? $element->getAttribute('value') : '';
+        }
     }
 }

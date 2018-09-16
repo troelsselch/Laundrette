@@ -2,15 +2,25 @@
 
 namespace App\Adapters;
 
+use DOMDocument;
+use DOMElement;
 use Exception;
 use App\Parsers\LoginFormParser;
 
 class CurlAdapter implements AdapterInterface
 {
-
     private $baseUrl;
 
     private $curl;
+
+    private $state = [
+        '__EVENTARGUMENT' => '',
+        '__EVENTTARGET' => '',
+        '__EVENTVALIDATION' => '',
+        '__VIEWSTATE' => '',
+        '__VIEWSTATEGENERATOR' => '',
+        '_ctl0:MessageType' => 'ERROR',
+    ];
 
     public function __construct(
         $baseUrl,
@@ -53,12 +63,9 @@ class CurlAdapter implements AdapterInterface
             return;
         }
 
-        // Parse login form tokens to be used in post request.
-        $parser = new LoginFormParser($html);
-        $postData = $parser->parse();
-
         $postData['_ctl0:ContentPlaceHolder1:tbUsername'] = $username;
         $postData['_ctl0:ContentPlaceHolder1:tbPassword'] = $password;
+        $postData['__EVENTTARGET'] = '_ctl0$ContentPlaceHolder1$btOK';
 
         // Perform login post request.
         $this->call($path, $postData);
@@ -82,9 +89,32 @@ class CurlAdapter implements AdapterInterface
         }
 
         $result = curl_exec($this->curl);
+        $html = utf8_decode($result);
 
         curl_close($this->curl);
 
-        return utf8_decode($result);
+        $this->saveState($html);
+
+        return $html;
+    }
+
+    private function saveState(string $html) : void
+    {
+        $dom = new DOMDocument();
+        // Silence warnings. The status page has multiple divs with the same id (imgExpand).
+        @$dom->loadHTML($html);
+        $dom->preserveWhiteSpace = false;
+
+        $stateIds = [
+            '__VIEWSTATEGENERATOR',
+            '__VIEWSTATE',
+            '__EVENTVALIDATION',
+        ];
+
+        foreach ($stateIds as $stateId) {
+            /** @var DOMElement $element */
+            $element = $dom->getElementById($stateId);
+            $this->state[$stateId] = $element ? $element->getAttribute('value') : '';
+        }
     }
 }

@@ -22,7 +22,7 @@ abstract class LaundretteParser
     protected function loadDOM($html): DOMDocument
     {
         $dom = new DOMDocument();
-        // Silence warnings. The status page has multple divs with the same id
+        // Silence warnings. The status page has multiple divs with the same id
         // (imgExpand).
         @$dom->loadHTML($html);
         $dom->preserveWhiteSpace = false;
