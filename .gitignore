@@ -1,6 +1,8 @@
-.idea
-vendor/*
+/vendor
+/.idea
+Homestead.json
+Homestead.yaml
+.env
 cookiejar_*.txt
 coverage
 build
-ProofOfConcept
