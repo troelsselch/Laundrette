@@ -8,7 +8,7 @@ use DOMElement;
 use GuzzleHttp\Client;
 use Exception;
 
-class GuzzleAdapter implements AdapterInterface
+class GuzzleAdapter
 {
     private $guzzle;
 

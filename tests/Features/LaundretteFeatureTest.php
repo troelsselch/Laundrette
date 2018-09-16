@@ -3,7 +3,7 @@
 namespace Tests;
 
 use App\Http\Controllers\LaundretteController;
-use App\Adapters\AdapterInterface;
+use App\Adapters\GuzzleAdapter;
 use App\Models\TimeSlot;
 use DateTime;
 use Mockery;
@@ -13,7 +13,7 @@ class LaundretteFeatureTest extends TestCase
     public function testCanGetReservations() : void
     {
         $fixture = $this->getFixture('Booking/BookingMain.aspx');
-        $adapter = Mockery::mock(AdapterInterface::class);
+        $adapter = Mockery::mock(GuzzleAdapter::class);
         $method = $adapter->shouldReceive('call');
         $method->andReturn($fixture);
 
@@ -39,7 +39,7 @@ class LaundretteFeatureTest extends TestCase
     public function testCanGetBalance() : void
     {
         $fixture = $this->getFixture('ELS_DEB/LoadBalance.aspx');
-        $adapter = Mockery::mock(AdapterInterface::class);
+        $adapter = Mockery::mock(GuzzleAdapter::class);
         $method = $adapter->shouldReceive('call');
         $method->andReturn($fixture);
 
@@ -52,7 +52,7 @@ class LaundretteFeatureTest extends TestCase
     public function testCanGetTransactions() : void
     {
         $fixture = $this->getFixture('ELS_DEB/LoadBalance.aspx');
-        $adapter = Mockery::mock(AdapterInterface::class);
+        $adapter = Mockery::mock(GuzzleAdapter::class);
         $method = $adapter->shouldReceive('call');
         $method->andReturn($fixture);
 
@@ -86,7 +86,7 @@ class LaundretteFeatureTest extends TestCase
     public function testCanGetMachineStates() : void
     {
         $fixture = $this->getFixture('Machine/MachineGroupStat.aspx');
-        $adapter = Mockery::mock(AdapterInterface::class);
+        $adapter = Mockery::mock(GuzzleAdapter::class);
         $method = $adapter->shouldReceive('call');
         $method->andReturn($fixture);
 
@@ -120,7 +120,7 @@ class LaundretteFeatureTest extends TestCase
     public function testCanGetVersion() : void
     {
         $fixture = $this->getFixture('DefaultLogin.html');
-        $adapter = Mockery::mock(AdapterInterface::class);
+        $adapter = Mockery::mock(GuzzleAdapter::class);
         $method = $adapter->shouldReceive('call');
         $method->andReturn($fixture);
 
@@ -134,7 +134,7 @@ class LaundretteFeatureTest extends TestCase
     public function testCanGetBookingCalendar() : void
     {
         $fixture = $this->getFixture('Booking/BookingCalendar.aspx');
-        $adapter = Mockery::mock(AdapterInterface::class);
+        $adapter = Mockery::mock(GuzzleAdapter::class);
         $method = $adapter->shouldReceive('call');
         $method->andReturn($fixture);
 
@@ -150,7 +150,7 @@ class LaundretteFeatureTest extends TestCase
     public function testCanBookingCalendarChangeMonth() : void
     {
         $fixture = $this->getFixture('Booking/BookingCalendar2.aspx');
-        $adapter = Mockery::mock(AdapterInterface::class);
+        $adapter = Mockery::mock(GuzzleAdapter::class);
         $method = $adapter->shouldReceive('call');
         $method->andReturn($fixture);
 
@@ -164,7 +164,7 @@ class LaundretteFeatureTest extends TestCase
     public function testCanBookingCalendarChangeYear() : void
     {
         $fixture = $this->getFixture('Booking/BookingCalendar3.aspx');
-        $adapter = Mockery::mock(AdapterInterface::class);
+        $adapter = Mockery::mock(GuzzleAdapter::class);
         $method = $adapter->shouldReceive('call');
         $method->andReturn($fixture);
 

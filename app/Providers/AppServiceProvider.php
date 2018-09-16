@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Adapters\AdapterInterface;
 use App\Adapters\GuzzleAdapter;
 use App\Models\Machine;
 use App\Models\Transaction;
@@ -19,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(AdapterInterface::class, function () {
+        $this->app->bind(GuzzleAdapter::class, function () {
             return new GuzzleAdapter(
                 env('LAUNDRETTE_URL'),
                 env('LAUNDRETTE_USERNAME'),

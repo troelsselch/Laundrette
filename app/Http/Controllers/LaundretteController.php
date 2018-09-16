@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Adapters\AdapterInterface;
+use App\Adapters\GuzzleAdapter;
 use App\Parsers\BookingMainParser;
 use App\Parsers\BookingCalendarParser;
-use App\Parsers\LaundretteParser;
 use App\Parsers\LoadBalanceBalanceParser;
 use App\Parsers\CurrentMachineStateParser;
 use App\Parsers\LoadBalanceNextButtonParser;
@@ -20,10 +19,10 @@ class LaundretteController
     const PATH_MACHINE_STATE = 'Machine/MachineGroupStat.aspx';
     const PATH_BOOKING_CALENDAR = 'Booking/BookingCalendar.aspx';
 
-    /** @var \App\Adapters\AdapterInterface */
+    /** @var GuzzleAdapter */
     private $adapter;
 
-    public function __construct(AdapterInterface $adapter)
+    public function __construct(GuzzleAdapter $adapter)
     {
         $this->adapter = $adapter;
     }
