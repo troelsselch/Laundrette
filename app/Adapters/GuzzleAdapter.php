@@ -53,7 +53,7 @@ class GuzzleAdapter implements AdapterInterface
 
         $postData['_ctl0:ContentPlaceHolder1:tbUsername'] = $username;
         $postData['_ctl0:ContentPlaceHolder1:tbPassword'] = $password;
-        $postData['__EVENTTARGET'] = '_ctl0$ContentPlaceHolder1$btOK';
+        $this->setEventTarget('_ctl0$ContentPlaceHolder1$btOK');
 
         $this->call(LaundretteController::PATH_DEFAULT, $postData);
     }
@@ -74,6 +74,11 @@ class GuzzleAdapter implements AdapterInterface
         $this->saveState($html);
 
         return $html;
+    }
+
+    public function setEventTarget(string $target) : void
+    {
+        $this->state['__EVENTTARGET'] = $target;
     }
 
     private function saveState(string $html) : void

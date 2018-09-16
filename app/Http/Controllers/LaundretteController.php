@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Adapters\AdapterInterface;
 use App\Parsers\BookingMainParser;
 use App\Parsers\BookingCalendarParser;
+use App\Parsers\LaundretteParser;
 use App\Parsers\LoadBalanceBalanceParser;
 use App\Parsers\CurrentMachineStateParser;
+use App\Parsers\LoadBalanceNextButtonParser;
 use App\Parsers\VersionParser;
 use App\Parsers\LoadBalanceTransactionsParser;
 
@@ -48,10 +50,24 @@ class LaundretteController
 
     public function getTransactions() : array
     {
-        $html = $this->adapter->call(self::PATH_BALANCE);
+        $data = [];
 
-        $parser = new LoadBalanceTransactionsParser($html);
-        $data = $parser->parse();
+        $callData = [];
+        do {
+            $html = $this->adapter->call(self::PATH_BALANCE, $callData);
+            $parser = new LoadBalanceTransactionsParser($html);
+            $new = $parser->parse();
+            $data = array_merge($data, $new);
+
+            $parser = new LoadBalanceNextButtonParser($html);
+            $hasMore = $parser->parse();
+            if ($hasMore) {
+                // Set like this to trigger a POST request.
+                $callData['__EVENTTARGET'] = '_ctl0$ContentPlaceHolder1$hlNext';
+                // Avoid server overload.
+                usleep(1000000);
+            }
+        } while ($hasMore);
 
         return $data;
     }
