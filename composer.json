@@ -13,6 +13,7 @@
         "laravel-doctrine/migrations": "^1.2",
         "laravel-doctrine/orm": "1.4.*",
         "laravel/lumen-framework": "5.7.*",
+        "sentry/sentry-laravel": "^0.10.0",
         "vlucas/phpdotenv": "~2.2"
     },
     "require-dev": {

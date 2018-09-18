@@ -83,6 +83,7 @@ $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 $app->register(LaravelDoctrine\ORM\DoctrineServiceProvider::class);
 $app->register(LaravelDoctrine\Migrations\MigrationsServiceProvider::class);
+$app->register(Sentry\SentryLaravel\SentryLumenServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
