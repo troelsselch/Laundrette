@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Adapters\GuzzleAdapter;
+use App\Models\MachineState;
+use App\Models\Reservation;
+use App\Models\Transaction;
 use App\Parsers\BookingMainParser;
 use App\Parsers\BookingCalendarParser;
 use App\Parsers\LoadBalanceBalanceParser;
@@ -10,8 +13,9 @@ use App\Parsers\CurrentMachineStateParser;
 use App\Parsers\LoadBalanceNextButtonParser;
 use App\Parsers\VersionParser;
 use App\Parsers\LoadBalanceTransactionsParser;
+use Illuminate\View\View;
 
-class LaundretteController
+class LaundretteController extends Controller
 {
     const PATH_DEFAULT = 'Default.aspx';
     const PATH_BOOKING = 'Booking/BookingMain.aspx';
@@ -49,6 +53,7 @@ class LaundretteController
 
     public function getTransactions() : array
     {
+        /** @var Transaction[] $data */
         $data = [];
 
         $callData = [];
@@ -71,6 +76,9 @@ class LaundretteController
         return $data;
     }
 
+    /**
+     * @return MachineState[]
+     */
     public function getMachineStates() : array
     {
         $html = $this->adapter->call(self::PATH_MACHINE_STATE);
@@ -99,5 +107,38 @@ class LaundretteController
         $version = $parser->parse();
 
         return $version;
+    }
+
+    public function index() : View
+    {
+        // return dashboard
+    }
+
+    public function renderMachineStateAndReservations() : View
+    {
+        $machineStates = $this->getMachineStates();
+        $reservations = $this->getReservations();
+        $bookings = [1 => [], 2 => [], 3 => []];
+        /** @var Reservation $reservation */
+        foreach ($reservations as $reservation) {
+            $bookings[$reservation->getMachine()->getId()][] = $reservation;
+        }
+
+        return view('machine_state', [
+            'machineStates' => $machineStates,
+            'bookings'      => $bookings,
+        ]);
+    }
+
+    public function components() : View
+    {
+//        return $this->renderMachineStateAndReservations();
+        $balance = $this->getBalance();
+        $version = $this->getVersion();
+
+        return view('components', [
+            'balance' => $balance,
+            'version' => $version,
+        ]);
     }
 }

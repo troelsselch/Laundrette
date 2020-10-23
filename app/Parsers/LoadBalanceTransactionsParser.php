@@ -23,6 +23,10 @@ class LoadBalanceTransactionsParser extends LaundretteParser
         return $this->getTransactions();
     }
 
+    /**
+     * @return Transaction[]
+     * @throws \Exception
+     */
     private function getTransactions() : array
     {
         $transactions = [];

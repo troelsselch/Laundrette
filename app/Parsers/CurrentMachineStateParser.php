@@ -19,6 +19,9 @@ class CurrentMachineStateParser extends LaundretteParser
         self::PREFIX . 'Repeater1__ctl2_Repeater2__ctl1',
     ];
 
+    /**
+     * @return MachineState[]
+     */
     public function parse()
     {
         $data = [];

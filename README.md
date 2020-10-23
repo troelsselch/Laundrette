@@ -14,10 +14,15 @@ mobile friendly.
 
 ## TODO
 
-- Job/Service to pull transaction data to local storage.
 - Frontend implementation.
-- "Make reservations" functionality.
+  - combine machinestate and bookings for machine_state.blade.php
+  - when machines are available the machine name is in the statestring, e.g "VASK 1 Afsluttedes 19:01"
+  - Add auth middleware to check for credentials instead of using .env
+- move getXXX methods out of LaundretteController (should only contain router endpoints)
 - Class and method documentation.
+- "Make reservations" functionality / future availability (calendar)
+
+- Job/Service to pull transaction data to local storage. DONE
 
 ## Limitations
 

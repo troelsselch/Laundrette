@@ -63,7 +63,6 @@ class GuzzleAdapter
 
     public function call($path, $data = null): string
     {
-        var_dump("oh no");
         $method = 'GET';
         $options = [];
         if ($data) {
